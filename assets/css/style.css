@@ -1,12 +1,4 @@
-.header {
-	width: 100%;
-}
-.codeValue {
-	width: 60%;
-}
-.barcodeScanner {
-	width: 40%;
-}
+
 .barcodeScanner {
 	font-size: 120%;
 	font-family: 'Overpass', sans-serif;
