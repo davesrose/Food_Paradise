@@ -22,18 +22,20 @@
 	canvas.drawing, canvas.drawingBuffer {position: absolute; left: 0; top: 0;}
 </style>
 <script type="text/javascript" src="assets/javascript/barcode.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 <body>
 
 <!-- Testing Scanner -->
 
-		<div class="input-group row">
-			<div class="col-xs-8">
+		<div class="input-group header">
+			<div class="codeValue">
 				<input id="scanner_input" class="form-control" placeholder="Click the button to scan an EAN..." type="text" /> 
 			</div>
-			<div class="input-group-btn col-xs-4"> 
+			<div class="input-group-btn barcodeScanner"> 
 				<button class="btn btn-default" type="button" data-toggle="modal" data-target="#livestream_scanner">
-					<i class="fa fa-barcode"></i>
+					<i class="fa fa-barcode"></i>Barcode Scanner
 				</button> 
 			</div>
 		</div><!-- /input-group -->
@@ -49,6 +51,7 @@
 			</div>
 			<div class="modal-body" style="position: static">
 				<div id="interactive" class="viewport"></div>
+				<input type="file" capture="camera" accept="image/*" id="cameraInput" name="cameraInput">
 				<div class="error"></div>
 			</div>
 			<div class="modal-footer">
