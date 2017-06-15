@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Train Schedules</title>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+	<!-- BootStrap Links -->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="assets/javascript/quagga.min.js"></script>
+<style>
+	#interactive.viewport {position: relative; width: 100%; height: auto; overflow: hidden; text-align: center;}
+	#interactive.viewport > canvas, #interactive.viewport > video {max-width: 100%;width: 100%;}
+	canvas.drawing, canvas.drawingBuffer {position: absolute; left: 0; top: 0;}
+</style>
+<script type="text/javascript" src="assets/javascript/barcode.js"></script>
+</head>
+<body>
+
+<!-- Testing Scanner -->
+<div class="row">
+	<div class="col-lg-6">
+		<div class="input-group">
+			<input id="scanner_input" class="form-control" placeholder="Click the button to scan an EAN..." type="text" /> 
+			<span class="input-group-btn"> 
+				<button class="btn btn-default" type="button" data-toggle="modal" data-target="#livestream_scanner">
+					<i class="fa fa-barcode"></i>
+				</button> 
+			</span>
+		</div><!-- /input-group -->
+	</div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
+<div class="modal" id="livestream_scanner">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Barcode Scanner</h4>
+			</div>
+			<div class="modal-body" style="position: static">
+				<div id="interactive" class="viewport"></div>
+				<div class="error"></div>
+			</div>
+			<div class="modal-footer">
+				<label class="btn btn-default pull-left">
+					<i class="fa fa-camera"></i> Use camera app
+					<input type="file" accept="image/*;capture=camera" capture="camera" class="hidden" />
+				</label>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</body>
+</html>
