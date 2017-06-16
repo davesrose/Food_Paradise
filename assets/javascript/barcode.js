@@ -127,7 +127,7 @@ function getIDs(UPC) {
 	      console.log(response);
 	      for (var i = 0; i < response.facetCounts.matches.length; i++) {
 	      	var foodItems = response.facetCounts.matches[i].id
-	      	var foodListings = $("Yummly Recipe Name: " + foodItems);
+	      	var foodListings = ("Yummly Recipe Name: " + foodItems);
 	      	$(".yummlyRecipes").append(foodListings);
 	      }
 	    });
