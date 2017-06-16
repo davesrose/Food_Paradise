@@ -125,13 +125,11 @@ function getIDs(UPC) {
 	    }).done(function(response) {
 	      console.log(queryURL);
 	      console.log(response);
-	      $(".yummlyRecipes")
-      for (var i = 0; i < response.matches.length; i++) {
-      	var foodItems = response.matches[i].id
-      	var foodListings = $("Yummly Recipe Name: " + foodItems);
-      	$(".yummlyRecipes").append(foodListings);
-      }
-
+	      for (var i = 0; i < response.matches.length; i++) {
+	      	var foodItems = response.matches[i].id
+	      	var foodListings = $("Yummly Recipe Name: " + foodItems);
+	      	$(".yummlyRecipes").append(foodListings);
+	      }
 	    });
     }
 }
