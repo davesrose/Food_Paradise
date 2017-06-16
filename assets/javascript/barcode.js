@@ -84,8 +84,8 @@ $(function() {
 			$('#scanner_input').val(result.codeResult.code);
 			Quagga.stop();	
 			setTimeout(function(){ $('#livestream_scanner').modal('hide'); }, 1000);
-//			var upcCode = result.codeResult.code;
-//			captureUPC(upcCode);
+			var upcCode = result.codeResult.code;
+			captureUPC(upcCode);
 
 		}
 	});
@@ -119,8 +119,8 @@ $(function() {
 		// upcCode for Golden Raisins
 		var queryURLBase = 'https://api.nutritionix.com/v1_1/item?upc=' + upcCode + '&appId=' + appID + '&appKey=' + appKey;
 
-		//console.log('result.codeResult.code: ' + result.codeResult.code);
-		alert('upcCode: ' + upcCode + 'queryURLBase = ' + queryURLBase);
+		console.log('upcCode: ' + upcCode);
+		console.log('queryURLBase = ' + queryURLBase);
 	}
 
 
