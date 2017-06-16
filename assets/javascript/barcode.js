@@ -1,10 +1,9 @@
 $(function() {
 	// Create the QuaggaJS config object for the live stream
-
 	var liveStreamConfig = {
 			inputStream: {
 				type : "LiveStream",
-				constraints: {				
+				constraints: {
 					width: {min: 640},
 					height: {min: 480},
 					aspectRatio: {min: 1, max: 100},
