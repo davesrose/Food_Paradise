@@ -81,7 +81,9 @@ $(function() {
 		if (result.codeResult.code){
 			$('#scanner_input').val(result.codeResult.code);
 			Quagga.stop();	
-			setTimeout(function(){ $('#livestream_scanner').modal('hide'); }, 1000);			
+			setTimeout(function(){ $('#livestream_scanner').modal('hide'); }, 1000);
+			var UPC = result.codeResult.code;
+			getIDs(UPC);			
 		}
 	});
     
@@ -97,6 +99,39 @@ $(function() {
 	$("#livestream_scanner input:file").on("change", function(e) {
 		if (e.target.files && e.target.files.length) {
 			Quagga.decodeSingle($.extend({}, fileConfig, {src: URL.createObjectURL(e.target.files[0])}), function(result) {alert(result.codeResult.code);});
+			var UPC = result.codeResult.code;
+			getIDs(UPC);
 		}
 	});
 });
+function getIDs(UPC) {
+	$(".barcodeNum").html("UPC: " + UPC);
+	var queryURL = "https://api.nutritionix.com/v1_1/item?upc="+UPC+"&appId=af71ef2f&appKey=64be45970143817635f29340426218f7";
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).done(function(response) {
+      console.log(queryURL);
+      console.log(response);
+      var foodName = response.item_name;
+      $(".foodID").html("food name: " + foodName);
+      yummlyResponse(foodName);
+    });
+    function yummlyResponse(foodName) {
+    	var queryURL2 = "https://api.yummly.com/v1/api/recipes?_app_id=069691a5&_app_key=3944fb993fe2cb009e5e6a5fd1e4facb&q="+foodName+"&requirePictures=true&maxResult=10&start=10"
+	    $.ajax({
+	      url: queryURL2,
+	      method: "GET"
+	    }).done(function(response) {
+	      console.log(queryURL);
+	      console.log(response);
+	      $(".yummlyRecipes")
+      for (var i = 0; i < response.matches.length; i++) {
+      	var foodItems = response.matches[i].id
+      	var foodListings = $("Yummly Recipe Name: " + foodItems);
+      	$(".yummlyRecipes").append(foodListings);
+      }
+
+	    });
+    }
+}
