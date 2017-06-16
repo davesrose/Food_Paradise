@@ -1,5 +1,6 @@
 $(function() {
 	// Create the QuaggaJS config object for the live stream
+
 	var liveStreamConfig = {
 			inputStream: {
 				type : "LiveStream",
@@ -82,7 +83,10 @@ $(function() {
 		if (result.codeResult.code){
 			$('#scanner_input').val(result.codeResult.code);
 			Quagga.stop();	
-			setTimeout(function(){ $('#livestream_scanner').modal('hide'); }, 1000);			
+			setTimeout(function(){ $('#livestream_scanner').modal('hide'); }, 1000);
+//			var upcCode = result.codeResult.code;
+//			captureUPC(upcCode);
+
 		}
 	});
     
@@ -100,4 +104,24 @@ $(function() {
 			Quagga.decodeSingle($.extend({}, fileConfig, {src: URL.createObjectURL(e.target.files[0])}), function(result) {alert(result.codeResult.code);});
 		}
 	});
+
+
+	function captureUPC(upcCode) {
+		// Add nutritionix API
+		// ===================
+		// nutritionix Application ID (rfenix) = c76f2620
+		// nutritionix Application Keys (rfenix) = 96d0f0398e787715bc78d4a6afe72cec
+		var appID = 'c76f2620';
+		var appKey = '96d0f0398e787715bc78d4a6afe72cec';
+		// upcCode for Coke
+		// var upcCode = 49000036756; 
+
+		// upcCode for Golden Raisins
+		var queryURLBase = 'https://api.nutritionix.com/v1_1/item?upc=' + upcCode + '&appId=' + appID + '&appKey=' + appKey;
+
+		//console.log('result.codeResult.code: ' + result.codeResult.code);
+		alert('upcCode: ' + upcCode + 'queryURLBase = ' + queryURLBase);
+	}
+
+
 });
