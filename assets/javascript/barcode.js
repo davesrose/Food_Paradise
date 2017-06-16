@@ -113,8 +113,7 @@ function getIDs(UPC) {
     }).done(function(response) {
       console.log(queryURL);
       console.log(response);
-      var foodName = response.item_name;
-      foodName.replace(/,/g , '');
+      var foodName = response.item_name.replace(/,/g , '');;
       $(".foodID").html("food name: " + foodName);
       yummlyResponse(foodName);
     });
