@@ -1,9 +1,21 @@
 $(function() {
 	// Create the QuaggaJS config object for the live stream
+
+  var envSource = sourceInfos.filter(function(sourceInfo) {
+    return sourceInfo.kind == "video"
+        && sourceInfo.facing == "environment";
+  }).reduce(function(a, source) {
+    return source;
+  }, null);
 	var liveStreamConfig = {
 			inputStream: {
 				type : "LiveStream",
 				constraints: {
+				    video : {
+				      optional : [{
+				        sourceId : envSource ? envSource.id : null
+				      }]
+				    },					
 					width: {min: 640},
 					height: {min: 480},
 					aspectRatio: {min: 1, max: 100},
