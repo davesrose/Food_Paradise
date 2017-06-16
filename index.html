@@ -27,6 +27,8 @@
 <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 <body>
+
+
 <!-- Testing Scanner -->
 <div class="container">
 
@@ -71,6 +73,20 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
+<script>
+    	var queryURL2 = "https://api.yummly.com/v1/api/recipes?_app_id=069691a5&_app_key=3944fb993fe2cb009e5e6a5fd1e4facb&q=Orzo&requirePictures=true&maxResult=10&start=10"
+	    $.ajax({
+	      url: queryURL2,
+	      method: "GET"
+	    }).done(function(response) {
+	      console.log(queryURL2);
+	      console.log(response);
+	      for (var i = 0; i < response.matches.length; i++) {
+	      	var foodItems = response.matches[i].id;
+	      	var foodListings = ("<div>Yummly Recipe Name: " + foodItems + "</div>");
+	      	$(".yummlyRecipes").append(foodListings);
+	      }
+	    });
+</script>
 </body>
 </html>
