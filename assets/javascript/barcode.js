@@ -2,24 +2,12 @@ $(function() {
 	// Create the QuaggaJS config object for the live stream
 	var liveStreamConfig = {
 			inputStream: {
-				  var envSource = sourceInfos.filter(function(sourceInfo) {
-				    return sourceInfo.kind == "video"
-				        && sourceInfo.facing == "environment";
-				  }).reduce(function(a, source) {
-				    return source;
-				  }, null);
 				type : "LiveStream",
 				constraints: {
 					width: {min: 640},
 					height: {min: 480},
 					aspectRatio: {min: 1, max: 100},
-					facingMode: "environment", // or "user" for the front camera
-				    audio : false,
-				    video : {
-				      optional : [{
-				        sourceId : envSource ? envSource.id : null
-				      }]
-				    }
+					facingMode: "environment" // or "user" for the front camera
 				}
 			},
 			locator: {
