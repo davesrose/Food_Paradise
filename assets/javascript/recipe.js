@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	// var recipeID = "Golden-Raisin-Rosemary-Oatmeal-Cookies-1785227"
 	var recipeID = localStorage.getItem("recipeID");
-	var queryURL = "http://api.yummly.com/v1/api/recipe/"+recipeID+"?_app_id=069691a5&_app_key=3944fb993fe2cb009e5e6a5fd1e4facb"
+	var queryURL = "https://api.yummly.com/v1/api/recipe/"+recipeID+"?_app_id=069691a5&_app_key=3944fb993fe2cb009e5e6a5fd1e4facb"
     $.ajax({
       url: queryURL,
       method: "GET"
