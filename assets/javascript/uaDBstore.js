@@ -33,10 +33,21 @@
 
   $(".save").on("click", function(event) {
     event.preventDefault();
-    recipeId = $("#train-name").val().trim();
+    // If the on click is in the same function JS as the page generation, we can use recipeID there without having to pull it again from a source
+    //recipeId = $("#train-name").val().trim();
 
     database.ref().push({
         recipeId: recipeId,
     });
+   
+   // Takes user to saved recipes.
+   // Pulls data from the database to run the yummmly get recipe API and generate a list similar to propogating the search list but for each recipeID
+  $(".MySaved").on("click", function(event) {
+    event.preventDefault();
+      var savedRecipe = childSnapshot.val().recipeId;
     }
+  // On the addition of saved recipes to the database
+  database.ref().on("child_added", function(childSnapshot, prevChildKey) {
+    var savedRecipe = childSnapshot.val().recipeId;
+  }
 //});
