@@ -14,64 +14,45 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script type="text/javascript" src="assets/javascript/getUserMedia.js"></script>
-<script type="text/javascript" src="assets/javascript/quagga.min.js"></script>
-<style>
-	#interactive.viewport {position: relative; width: 100%; height: auto; overflow: hidden; text-align: center;}
-	#interactive.viewport > canvas, #interactive.viewport > video {max-width: 100%;width: 100%;}
-	canvas.drawing, canvas.drawingBuffer {position: absolute; left: 0; top: 0;}
-</style>
-
-<script type="text/javascript" src="assets/javascript/barcode.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
+<!-- <script type="text/javascript" src="assets/javascript/barcode.js"></script> -->
+<script type="text/javascript" src="assets/javascript/recipe.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Overpass|Lato|Oswald" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
-<body>
+<body class="background">
 
-
-<!-- Testing Scanner -->
 <div class="container wrapper">
-
-		<div class="input-group row">
-			<div class="col-sm-8">
-				<input id="scanner_input" class="form-control" placeholder="Click the button to scan an EAN..." type="text" />
-			</div> 
-			<div class="input-group-btn col-sm-4 barcodeScanner"> 
-				<button class="btn btn-default" type="button" data-toggle="modal" data-target="#livestream_scanner">
-					<i class="fa fa-barcode"></i>Barcode Scan
-				</button> 
-			</div>
-		</div><!-- /input-group -->
-		<div class="row nutritionix">
-			<div class="barcodeNum col-sm-6"></div>
-			<div class="foodID col-sm-6"></div>
-		</div>
-		<div class="row Yummly">
-			<div class="col-sm-8 yummlyRecipes"></div>
-		</div>
+	<div class="header">
+		<a href="index.html"><div class="return">Back</div></a>
+		<h1 class="name"></h1>
+		<div class="save">Save</div>
+		<div class="clear"></div>
+	</div>
+	<div class="info row"></div>
+	<div class="nutrition row"></div>
+	<img src="" class="img">
+	<div class="recipeList"><ul></ul></div>
+	<button type="submit" class="btn btn-default" id="recipeModal" data-toggle="modal" data-target="#directions_box"></i>Directions</button>
 </div>
-<div class="modal" id="livestream_scanner">
+
+<div class="modal" id="directions_box">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title">Barcode Scanner</h4>
+				<h4 class="modal-title">Recipe Source</h4>
 			</div>
 			<div class="modal-body" style="position: static">
-				<div id="interactive" class="viewport"></div>
-				<div class="error"></div>
+				<div class="directionsHTML"></div>
 			</div>
 			<div class="modal-footer">
-				<label class="btn btn-default pull-left">
-					<i class="fa fa-camera"></i> Use camera app
-					<input type="file" accept="image/*;capture=camera" capture="camera" class="hidden" />
-				</label>
 				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
 </body>
 </html>
