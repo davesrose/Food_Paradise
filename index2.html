@@ -14,7 +14,9 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script type="text/javascript" src="assets/javascript/getUserMedia.js"></script>
 <script type="text/javascript" src="assets/javascript/quagga.min.js"></script>
+<script type="text/javascript" src="assets/javascript/barcode.js"></script>
 <style>
 	#interactive.viewport {position: relative; width: 100%; height: auto; overflow: hidden; text-align: center;}
 	#interactive.viewport > canvas, #interactive.viewport > video {max-width: 100%;width: 100%;}
@@ -31,50 +33,45 @@
 <!-- Testing Scanner -->
 <div class="container wrapper">
 
-	<div class="header" style="padding-bottom: 1%;">
-		<div class="foodInputCon">
-			<h2>Input Item</h2>
-			<div class="foodInput">
-				<div class="input-group row">
-					<div>
-						<input id="scanner_input" class="form-control" placeholder="Click the button to scan an EAN..." type="text" />
-					</div> 
+		<div class="header">
+			<div class="foodInputCon">
+				<h2>Input Food Item</h2>
+				<div class="foodInput">
 					<div class="input-group-btn barcodeScanner"> 
 						<button class="btn btn-default" type="button" data-toggle="modal" data-target="#livestream_scanner">
-							<i class="fa fa-barcode"></i>Scan
+							<i class="fa fa-barcode"></i>Barcode Scanner
 						</button> 
 					</div>
-				</div><!-- /input-group -->
-				<div class="typeFood">
-					<input id="food-input" class="form-control" placeholder="Food..." type="text" /><button type="submit" class="btn btn-default" id="foodSubmit">Go</button>
-					<div style="clear:left;"></div>
+					<div class="typeFood">
+						<input id="food-input" class="form-control" placeholder="Enter Food" type="text" /><button type="submit" class="btn btn-default" id="foodSubmit"><div id="go">Go</div></button>
+						<div style="clear:left;"></div>
+					</div>
 				</div>
+				<div class="bottom"></div>
+				<div class="tab"></div>
 			</div>
-			<div class="bottom"></div>
-			<div class="tab"></div>
+			<h1 class="name">Food Paradise</h1>
+			<div class="account">Saved Recipes</div>
+			
 		</div>
-		<h1 class="name title">Food Paradise</h1>
-		<div class="account">
-			<h2>Recipes</h2>
-			<div class="recipeContainer">
-				<div class="signin"><img src="assets/images/googleIcon.png"></div>
-				<div class="recipe">Recipe 1<button type="submit" class="btn btn-default">-</button></div>
-				<div class="line"></div>
-				<div class="recipe">Recipe 2<button type="submit" class="btn btn-default">-</button></div>
-			</div>
-			<div class="bottom"></div>
-			<div class="tab"></div>
-		</div>
-	</div>
 
-	<div class="row nutritionix">
-		<div class="foodID col-sm-12"></div>
-	</div>
-	<div class="row Yummly">
-		<div class="col-sm-12 yummlyRecipes"></div>
-	</div>
+<!-- 		<div class="input-group row">
+			<div class="col-sm-8">
+				<input id="scanner_input" class="form-control" placeholder="Click the button to scan an EAN..." type="text" />
+			</div>  -->
+<!-- 			<div class="input-group-btn col-sm-4 barcodeScanner"> 
+				<button class="btn btn-default" type="button" data-toggle="modal" data-target="#livestream_scanner">
+					<i class="fa fa-barcode"></i>Barcode Scan
+				</button> 
+			</div> -->
+		<!-- </div> --><!-- /input-group -->
+		<div class="row nutritionix">
+			<div class="foodID col-sm-12"></div>
+		</div>
+		<div class="row Yummly">
+			<div class="col-sm-12 yummlyRecipes"></div>
+		</div>
 </div>
-
 <div class="modal" id="livestream_scanner">
 	<div class="modal-dialog">
 		<div class="modal-content">

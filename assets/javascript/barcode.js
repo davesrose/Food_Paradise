@@ -1,4 +1,51 @@
 $(document).ready(function(){
+	// $(".yummlyRecipes .recipeOption").hide();
+	$(".nutritionix").hide();
+	$(".foodInput").css({
+		"overflow" : "hidden",
+		height : 0
+	});
+	$(".recipeContainer").css({
+		"overflow" : "hidden",
+		height : 0
+	});
+	(function($) {
+	    $.fn.clickToggle = function(func1, func2) {
+	        var funcs = [func1, func2];
+	        this.data('toggleclicked', 0);
+	        this.click(function() {
+	            var data = $(this).data();
+	            var tc = data.toggleclicked;
+	            $.proxy(funcs[tc], this)();
+	            data.toggleclicked = (tc + 1) % 2;
+	        });
+	        return this;
+	    };
+	}(jQuery));
+	$('.foodInputCon').clickToggle(function() {   
+	    $('.foodInput').animate({
+    		height: $('.foodInput').get(0).scrollHeight
+		}, 1000, function(){
+    		$(this).height('auto');
+		});
+	},
+	function() {
+	    $(".foodInput").animate({
+	        "height": "0px"
+	    }, 1000);
+	});
+	$('.account').clickToggle(function() {   
+	    $('.recipeContainer').animate({
+    		height: $('.recipeContainer').get(0).scrollHeight
+		}, 1000, function(){
+    		$(this).height('auto');
+		});
+	},
+	function() {
+	    $(".recipeContainer").animate({
+	        height: 0
+	    }, 1000);
+	});
 	if (localStorage.getItem("foodName") !== null) {
 		var foodName = localStorage.getItem("foodName");
 		yummlyResponse(foodName);
@@ -115,7 +162,7 @@ $(document).ready(function(){
 				getIDs(UPC);
 			}
 		});
-	});
+	});	
 	function getIDs(UPC) {
 		$(".barcodeNum").html("UPC: " + UPC);
 		var queryURL = "https://api.nutritionix.com/v1_1/item?upc="+UPC+"&appId=af71ef2f&appKey=64be45970143817635f29340426218f7";
@@ -125,10 +172,22 @@ $(document).ready(function(){
 	    }).done(function(response) {
 	      console.log(queryURL);
 	      console.log(response);
+			$(".foodInput").animate({
+				"height": "0px"
+			}, 1400);
 	      var foodName = response.item_name.replace(/,/g , '');;
-	      $(".foodID").html("food name: " + foodName);
+		$(".nutritionix").show();
+	      $(".foodID").html("Food Name: " + foodName);
 	      localStorage.setItem("foodName",foodName);
 	      yummlyResponse(foodName);
+	    }).fail(function (jqXHR, textStatus, errorThrown) {
+	    	$(".foodID").html("Food not found. Try typing in or scanning another.");
+	    	var foodName = "";
+	    	localStorage.setItem("foodName",foodName);
+	    	$(".yummlyRecipes").empty();
+			$(".foodInput").animate({
+				"height": "0px"
+			}, 1400);
 	    });
 	}
 	function yummlyResponse(foodName) {
@@ -141,9 +200,12 @@ $(document).ready(function(){
 	      console.log(queryURL2);
 	      console.log(response);
 	      for (var i = 0; i < response.matches.length; i++) {
-	      	var foodItems = response.matches[i].id
-	      	var recipeName = response.matches[i].recipeName
-	      	var foodListings = ("<div data-id='"+foodItems+"' class='recipeOption'><div class='recipeThumb'>" + recipeName + "</div></div>");
+	      	var foodItems = response.matches[i].id;
+	      	var recipeName = response.matches[i].recipeName;
+	      	var thumbnail = response.matches[i].smallImageUrls[0];
+	      	var rating = response.matches[i].rating;
+	      	var source = response.matches[i].sourceDisplayName;
+	      	var foodListings = ("<div data-id='"+foodItems+"' class='recipeOption'><div class='recipeThumb'><img src='"+thumbnail+"'><div class'recipeInfo'><div class='top'>" + recipeName + "</div><div class='recipeBottom'>"+rating+" out of 5<span class='source'>&emsp;Source: "+source+"</span></div></div><div style='clear: left;'></div></div></div>");
 	      	$(".yummlyRecipes").append(foodListings);
 	      }
 	    });
@@ -154,5 +216,12 @@ $(document).ready(function(){
 		localStorage.setItem("recipeID", recipeID);
 		console.log(localStorage.getItem("recipeID"));
 		window.location.href = "recipe.html";
+	});
+	$("#foodSubmit").on("click", function() {
+		$(".nutritionix").show();
+		var foodName = $("#food-input").val().replace(/,/g , '');
+	    $(".foodID").html("Food Name: " + foodName);
+	    localStorage.setItem("foodName",foodName);
+	    yummlyResponse(foodName);
 	});
 });
