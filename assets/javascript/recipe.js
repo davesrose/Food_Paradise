@@ -1,4 +1,35 @@
 $(document).ready(function(){
+	$(".recipeContainer").css({
+		"overflow" : "hidden",
+		height : 0
+	});
+
+	(function($) {
+	    $.fn.clickToggle = function(func1, func2) {
+	        var funcs = [func1, func2];
+	        this.data('toggleclicked', 0);
+	        this.click(function() {
+	            var data = $(this).data();
+	            var tc = data.toggleclicked;
+	            $.proxy(funcs[tc], this)();
+	            data.toggleclicked = (tc + 1) % 2;
+	        });
+	        return this;
+	    };
+	}(jQuery));
+	$('.accountRecipe').clickToggle(function() {   
+	    $('.recipeContainer').animate({
+    		height: $('.recipeContainer').get(0).scrollHeight
+		}, 1000, function(){
+    		$(this).height('auto');
+		});
+	},
+	function() {
+	    $(".recipeContainer").animate({
+	        height: 0
+	    }, 1000);
+	});
+
 	// var recipeID = "Golden-Raisin-Rosemary-Oatmeal-Cookies-1785227"
 	var recipeID = localStorage.getItem("recipeID");
 	var queryURL = "https://api.yummly.com/v1/api/recipe/"+recipeID+"?_app_id=069691a5&_app_key=3944fb993fe2cb009e5e6a5fd1e4facb"
