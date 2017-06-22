@@ -184,11 +184,13 @@ position: relative;
 	text-shadow: none;
 	color: #fff;
 	font-weight: 500;
+	z-index: 11;
 }
 #food-input {
 	width: 66%;
 	margin-left: 5%;
 	float: left;
+	z-index: 11;
 }
 #foodSubmit {
 	font-family: 'Overpass', sans-serif;
@@ -201,6 +203,7 @@ position: relative;
 	text-shadow: none;
 	color: #fff;
 	font-weight: 500;
+	z-index: 11;
 }
 #recipeModal {
 	font-family: 'Overpass', sans-serif;

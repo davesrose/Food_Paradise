@@ -17,7 +17,8 @@ $(document).ready(function(){
 	        return this;
 	    };
 	}(jQuery));
-	$('.accountRecipe').clickToggle(function() {   
+	
+	$('.accountRecipe h2,.accountRecipe .bottom,.accountRecipe .tab').clickToggle(function() {   
 	    $('.recipeContainer').animate({
     		height: $('.recipeContainer').get(0).scrollHeight
 		}, 1000, function(){
@@ -78,6 +79,37 @@ $(document).ready(function(){
       $("#recipeModal").on("click", function() {
       		$(".directionsHTML").html("<iframe src='"+recipeSource+"'></iframe>");
   		});
+      $(".recipeContainer").empty()
+
+  var config = {
+    apiKey: "AIzaSyDi2g588bcWLXFwdCjviNcxOLMGQapxjbU",
+    authDomain: "food-paradise-8ef13.firebaseapp.com",
+    databaseURL: "https://food-paradise-8ef13.firebaseio.com",
+    projectId: "food-paradise-8ef13",
+    storageBucket: "food-paradise-8ef13.appspot.com",
+    messagingSenderId: "698241980106"
+  };
+  firebase.initializeApp(config);
+  var database = firebase.database();
+	  $(".save").on("click", function(event) {
+	    event.preventDefault();
+	    // If the on click is in the same function JS as the page generation, we can use recipeID there without having to pull it again from a source
+	    //recipeId = $("#train-name").val().trim();
+
+	    database.ref().push({
+	        recipeId: recipeID,
+	        recipeName: recipeName
+	    });
+	    console.log("recipe ID: "+recipeID+" recipe Name: "+recipeName);
+	    database.ref().on("child_added", function(childSnapshot, prevChildKey) {
+	    	event.preventDefault();
+	    	var savedRecipe = childSnapshot.val().recipeID;
+	    	var savedName = childSnapshot.val().recipeName;
+
+	    	$(".recipeContainer").append('<div class="recipe">'+savedName+'<button type="submit" class="btn btn-default">-</button></div>');
+	    })
+	});
+
       console.log("Cals: "+cals+" sodium: "+sodium+" fat: "+fat+" carbs: "+carbs+" protein: "+protein+" potassium: "+potassium);
     });
 });
