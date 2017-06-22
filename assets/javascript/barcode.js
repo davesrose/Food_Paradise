@@ -22,7 +22,7 @@ $(document).ready(function(){
 	        return this;
 	    };
 	}(jQuery));
-	$('.foodInputCon').clickToggle(function() {   
+	$('.foodInputCon h2,.foodInputCon .bottom,.foodInputCon .tab').clickToggle(function() {   
 	    $('.foodInput').animate({
     		height: $('.foodInput').get(0).scrollHeight
 		}, 1000, function(){
@@ -34,7 +34,7 @@ $(document).ready(function(){
 	        "height": "0px"
 	    }, 1000);
 	});
-	$('.account').clickToggle(function() {   
+	$('.account h2,.account .bottom,.account .tab').clickToggle(function() {   
 	    $('.recipeContainer').animate({
     		height: $('.recipeContainer').get(0).scrollHeight
 		}, 1000, function(){
@@ -199,6 +199,7 @@ $(document).ready(function(){
 	    }).done(function(response) {
 	      console.log(queryURL2);
 	      console.log(response);
+	      if (response )
 	      for (var i = 0; i < response.matches.length; i++) {
 	      	var foodItems = response.matches[i].id;
 	      	var recipeName = response.matches[i].recipeName;
