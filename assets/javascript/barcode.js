@@ -199,7 +199,9 @@ $(document).ready(function(){
 	    }).done(function(response) {
 	      console.log(queryURL2);
 	      console.log(response);
-	      if (response )
+	      if (response.matches.length === 0) {
+	      	$(".yummlyRecipes").html("<div class='noRecipes'>No Recipes Found</div>")
+	      }
 	      for (var i = 0; i < response.matches.length; i++) {
 	      	var foodItems = response.matches[i].id;
 	      	var recipeName = response.matches[i].recipeName;
