@@ -320,6 +320,14 @@ position: relative;
 	text-align: center;
 	font-size: 120%;
 }
+.noRecipes {
+	background-color: #fff;
+	padding: 2%;
+	font-family: 'Overpass', sans-serif;
+	font-weight: 500;
+	text-align: center;
+	font-size: 120%;	
+}
 .yummlyRecipes {
 	margin: 0px;
 	padding: 0px;
