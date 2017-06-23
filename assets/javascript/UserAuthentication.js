@@ -1,3 +1,4 @@
+    //testing
     var config = {
       apiKey: "AIzaSyDi2g588bcWLXFwdCjviNcxOLMGQapxjbU",
       authDomain: "food-paradise-8ef13.firebaseapp.com",
