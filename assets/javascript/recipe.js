@@ -93,9 +93,13 @@ $(document).ready(function(){
   var database = firebase.database();
 	  $(".save").on("click", function(event) {
 	    event.preventDefault();
-	    // If the on click is in the same function JS as the page generation, we can use recipeID there without having to pull it again from a source
-	    //recipeId = $("#train-name").val().trim();
+      //Build array of recipeIDs from DB
+      for (var i = Things.length - 1; i >= 0; i--) {
+        Things[i]
+              var recall_name = childSnapshot.val().recipeID;
+      }
 
+      if (recall_name != recipeID) {
 	    database.ref().push({
 	        recipeId: recipeID,
 	        recipeName: recipeName
