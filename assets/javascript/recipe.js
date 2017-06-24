@@ -118,7 +118,7 @@ $(document).ready(function(){
 			    console.log("recipe ID: "+recipeID+" recipe Name: "+recipeName);
 		  } else {
 		    // No user is signed in.
-		    $("#signIn_box").modal("show");
+		    // $("#signIn_box").modal("show");
 		  }
 		});
 	});
