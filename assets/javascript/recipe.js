@@ -102,26 +102,25 @@ $(document).ready(function(){
     //     userRef.set(true);
     //   }
     // });
-    var user = firebase.auth().currentUser;
 	$(".save").on("click", function(event) {
 	    event.preventDefault();
-	    // If the on click is in the same function JS as the page generation, we can use recipeID there without having to pull it again from a source
-	    //recipeId = $("#train-name").val().trim();
-		if (user) {
-		  // User is signed in.
-		    recipe.number = recipe.number+1;
-		    listRef.child(recipe).set({
-		    	number: recipe.number
-		    })
-		    listRef.child(recipe.number).set({
-		        recipeId: recipeID,
-		        recipeName: recipeName
-		    });
-		    console.log("recipe ID: "+recipeID+" recipe Name: "+recipeName);
-		} else {
-		  // No user is signed in.
-		  $("#signIn_box").modal("show");
-		}
+		firebase.auth().onAuthStateChanged(function(user) {
+		  if (user) {
+		    // User is signed in.
+			    recipe.number = recipe.number+1;
+			    listRef.child(recipe).set({
+			    	number: recipe.number
+			    })
+			    listRef.child(recipe.number).set({
+			        recipeId: recipeID,
+			        recipeName: recipeName
+			    });
+			    console.log("recipe ID: "+recipeID+" recipe Name: "+recipeName);
+		  } else {
+		    // No user is signed in.
+		    $("#signIn_box").modal("show");
+		  }
+		});
 	});
 
 	    listRef.on("child_added", function(childSnapshot, prevChildKey) {
