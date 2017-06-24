@@ -1,5 +1,5 @@
 //User Authentication and database storage
-//$(document).ready(function() {
+$(document).ready(function() {
   // Initialize Firebase
   var config = {
     apiKey: "AIzaSyDi2g588bcWLXFwdCjviNcxOLMGQapxjbU",
@@ -74,4 +74,4 @@ firebase.auth().signOut()
   // database.ref().on("child_added", function(childSnapshot, prevChildKey) {
   //   var savedRecipe = childSnapshot.val().recipeId;
   // }
-//});
+});
