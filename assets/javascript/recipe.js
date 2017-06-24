@@ -3,7 +3,6 @@ $(document).ready(function(){
 		"overflow" : "hidden",
 		height : 0
 	});
-
 	(function($) {
 	    $.fn.clickToggle = function(func1, func2) {
 	        var funcs = [func1, func2];
@@ -17,7 +16,6 @@ $(document).ready(function(){
 	        return this;
 	    };
 	}(jQuery));
-	
 	$('.accountRecipe h2,.accountRecipe .bottom,.accountRecipe .tab').clickToggle(function() {   
 	    $('.recipeContainer').animate({
     		height: $('.recipeContainer').get(0).scrollHeight
@@ -30,7 +28,6 @@ $(document).ready(function(){
 	        height: 0
 	    }, 1000);
 	});
-
 	// var recipeID = "Golden-Raisin-Rosemary-Oatmeal-Cookies-1785227"
 	var recipeID = localStorage.getItem("recipeID");
 	var queryURL = "https://api.yummly.com/v1/api/recipe/"+recipeID+"?_app_id=069691a5&_app_key=3944fb993fe2cb009e5e6a5fd1e4facb"
@@ -79,7 +76,7 @@ $(document).ready(function(){
       $("#recipeModal").on("click", function() {
       		$(".directionsHTML").html("<iframe src='"+recipeSource+"'></iframe>");
   		});
-      $(".recipeContainer").empty()
+      // $(".recipeContainer").empty()
 
   var config = {
     apiKey: "AIzaSyDi2g588bcWLXFwdCjviNcxOLMGQapxjbU",
@@ -91,25 +88,111 @@ $(document).ready(function(){
   };
   firebase.initializeApp(config);
   var database = firebase.database();
+    var listRef = database.ref("presence");
+    var userRef = listRef.push();
+    var presenceRef = database.ref(".info/connected");
+    var user = {
+        number: 0,
+        recipe : {
+        	number: 0
+        }
+    };
+    // presenceRef.on("value", function(snap) {
+    //   if (snap.val()) {
+    //     // Remove ourselves when we disconnect.
+    //     // userRef.onDisconnect().remove();
+
+    //     userRef.set(true);
+    //   }
+    // });
+    listRef.once("value", function(snapshot) {
+    	user.number = user.number+1;
+        // if (Object.keys(snapshot.val()).indexOf('1') === -1) {
+        //     player.number = '1';
+        //     // opponent.number = '2';
+        // } else if (Object.keys(snapshot.val()).indexOf('2') === -1) {
+        //     player.number = '2';
+        //     // opponent.number = '1';
+        // }
+
+        // // If you got a player number, you're 1 or 2.
+        // if (player.number !== '0') {
+        //     // Make a connection to Firebase and send your info.
+            con = listRef.child(user.number);
+            con.set(user);
+        //     // When I disconnect, remove this device.
+        //     con.onDisconnect().remove();
+
+        //     // If 1 and 2 were taken, your number is still 0.
+        // } else {
+        //     // Remove the name form and put the alert there.
+        //    $(".main > .wrapper").empty();
+        //     setTimeout(function(){
+        //         alert("Two users already on.  Wait and refresh");     
+        //     }, 50);
+        // }
+        
+    });
 	  $(".save").on("click", function(event) {
 	    event.preventDefault();
 	    // If the on click is in the same function JS as the page generation, we can use recipeID there without having to pull it again from a source
 	    //recipeId = $("#train-name").val().trim();
-
-	    database.ref().push({
+	    user.recipe.number = user.recipe.number+1;
+	    listRef.child(user.recipe).set({
+	    	number: user.recipe.number
+	    })
+	    listRef.child(user.recipe.number).set({
 	        recipeId: recipeID,
 	        recipeName: recipeName
 	    });
 	    console.log("recipe ID: "+recipeID+" recipe Name: "+recipeName);
-	    database.ref().on("child_added", function(childSnapshot, prevChildKey) {
+	   //  database.ref().on("child_added", function(childSnapshot, prevChildKey) {
+	   //  	event.preventDefault();
+	   //  	var savedRecipe = childSnapshot.val().recipeID;
+	   //  	var savedName = childSnapshot.val().recipeName;
+
+	   //  	// $(".recipeContainer").append('<div class="recipe">'+savedName+'<button type="submit" class="btn btn-default removeRecipe">-</button></div>');
+		  // //   $(".removeRecipe").on("click", function(childSnapshot, prevChildKey) {
+				// // ref = savedName.parent();
+				// // ref.remove();
+		  // //   });
+	   //  });
+
+	});
+
+	    listRef.on("child_added", function(childSnapshot, prevChildKey) {
 	    	event.preventDefault();
 	    	var savedRecipe = childSnapshot.val().recipeID;
 	    	var savedName = childSnapshot.val().recipeName;
-
-	    	$(".recipeContainer").append('<div class="recipe">'+savedName+'<button type="submit" class="btn btn-default">-</button></div>');
-	    })
-	});
+	    	$(".recipeContainer").append('<div class="recipe" id='+recipeID+'>'+savedName+'<button type="submit" class="btn btn-default removeRecipe">-</button></div>');
+		    $(".removeRecipe").on("click", function(childSnapshot, prevChildKey) {
+		    	console.log(savedName);
+		    	listRef.child(user.recipe.number).remove();
+		    	$("#"+recipeID+"").remove();
+		    });
+	    });
 
       console.log("Cals: "+cals+" sodium: "+sodium+" fat: "+fat+" carbs: "+carbs+" protein: "+protein+" potassium: "+potassium);
     });
+	$(".signin").on("click", function() {
+		$("#signIn_box").modal("show");
+	});
+	if (screen.width > 720) {
+		$(".barcodeScanner button").html("Barcode Scanner");
+		$(".signin img").css({
+			width : "80%",
+			"margin-left" : "10%",
+			"margin-top" : "5%"
+		});
+	} else {
+		$(".barcodeScanner button").html("Scan");
+		$(".signin img").css({
+			width : "100%",
+			"margin-left" : "0px",
+			"margin-top" : "0px"
+		});
+	}
+
+	//if user is not signed in, start button first opens user sign in modal:
+
 });
