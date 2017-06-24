@@ -13,7 +13,13 @@
   var database = firebase.database();
   // FirebaseUI config.
       var uiConfig = {
-        signInSuccessUrl: 'https://davesrose.github.io/Food_Paradise/',
+        signInSuccessUrl: '/',
+        'callbacks': {
+          'signInSuccess' : function(user, credential, redirectUrl) {
+            console.log(user)
+            $("#signIn_box").modal("hide");
+          }
+        },
         signInOptions: [
           // Leave the lines as is for the providers you want to offer your users.
           firebase.auth.GoogleAuthProvider.PROVIDER_ID,
