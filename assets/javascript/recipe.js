@@ -107,30 +107,8 @@ $(document).ready(function(){
     // });
     listRef.once("value", function(snapshot) {
     	user.number = user.number+1;
-        // if (Object.keys(snapshot.val()).indexOf('1') === -1) {
-        //     player.number = '1';
-        //     // opponent.number = '2';
-        // } else if (Object.keys(snapshot.val()).indexOf('2') === -1) {
-        //     player.number = '2';
-        //     // opponent.number = '1';
-        // }
-
-        // // If you got a player number, you're 1 or 2.
-        // if (player.number !== '0') {
-        //     // Make a connection to Firebase and send your info.
             con = listRef.child(user.number);
             con.set(user);
-        //     // When I disconnect, remove this device.
-        //     con.onDisconnect().remove();
-
-        //     // If 1 and 2 were taken, your number is still 0.
-        // } else {
-        //     // Remove the name form and put the alert there.
-        //    $(".main > .wrapper").empty();
-        //     setTimeout(function(){
-        //         alert("Two users already on.  Wait and refresh");     
-        //     }, 50);
-        // }
         
     });
 	  $(".save").on("click", function(event) {
@@ -138,10 +116,10 @@ $(document).ready(function(){
 	    // If the on click is in the same function JS as the page generation, we can use recipeID there without having to pull it again from a source
 	    //recipeId = $("#train-name").val().trim();
 	    user.recipe.number = user.recipe.number+1;
-	    listRef.child(user.recipe).set({
+	    listRef.child(user.recipe).update({
 	    	number: user.recipe.number
 	    })
-	    listRef.child(user.recipe.number).set({
+	    listRef.child(user.recipe.number).update({
 	        recipeId: recipeID,
 	        recipeName: recipeName
 	    });
