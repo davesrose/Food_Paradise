@@ -91,11 +91,8 @@ $(document).ready(function(){
     var listRef = database.ref("presence");
     var userRef = listRef.push();
     var presenceRef = database.ref(".info/connected");
-    var user = {
-        number: 0,
-        recipe : {
-        	number: 0
-        }
+    var recipe = {
+        number: 0
     };
     // presenceRef.on("value", function(snap) {
     //   if (snap.val()) {
@@ -105,37 +102,26 @@ $(document).ready(function(){
     //     userRef.set(true);
     //   }
     // });
-    listRef.once("value", function(snapshot) {
-    	user.number = user.number+1;
-            con = listRef.child(user.number);
-            con.set(user);
-        
-    });
-	  $(".save").on("click", function(event) {
+    var user = firebase.auth().currentUser;
+	$(".save").on("click", function(event) {
 	    event.preventDefault();
 	    // If the on click is in the same function JS as the page generation, we can use recipeID there without having to pull it again from a source
 	    //recipeId = $("#train-name").val().trim();
-	    user.recipe.number = user.recipe.number+1;
-	    listRef.child(user.recipe).update({
-	    	number: user.recipe.number
-	    })
-	    listRef.child(user.recipe.number).update({
-	        recipeId: recipeID,
-	        recipeName: recipeName
-	    });
-	    console.log("recipe ID: "+recipeID+" recipe Name: "+recipeName);
-	   //  database.ref().on("child_added", function(childSnapshot, prevChildKey) {
-	   //  	event.preventDefault();
-	   //  	var savedRecipe = childSnapshot.val().recipeID;
-	   //  	var savedName = childSnapshot.val().recipeName;
-
-	   //  	// $(".recipeContainer").append('<div class="recipe">'+savedName+'<button type="submit" class="btn btn-default removeRecipe">-</button></div>');
-		  // //   $(".removeRecipe").on("click", function(childSnapshot, prevChildKey) {
-				// // ref = savedName.parent();
-				// // ref.remove();
-		  // //   });
-	   //  });
-
+		if (user) {
+		  // User is signed in.
+		    recipe.number = recipe.number+1;
+		    listRef.child(recipe).set({
+		    	number: recipe.number
+		    })
+		    listRef.child(recipe.number).set({
+		        recipeId: recipeID,
+		        recipeName: recipeName
+		    });
+		    console.log("recipe ID: "+recipeID+" recipe Name: "+recipeName);
+		} else {
+		  // No user is signed in.
+		  $("#signIn_box").modal("show");
+		}
 	});
 
 	    listRef.on("child_added", function(childSnapshot, prevChildKey) {
