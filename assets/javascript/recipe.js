@@ -108,10 +108,10 @@ $(document).ready(function(){
 		  if (user) {
 		    // User is signed in.
 			    recipe.number = recipe.number+1;
-			    listRef.child(recipe).set({
+			    listRef.set({
 			    	number: recipe.number
 			    })
-			    listRef.child(recipe.number).set({
+			    listRef.child(number).set({
 			        recipeId: recipeID,
 			        recipeName: recipeName
 			    });
@@ -130,7 +130,7 @@ $(document).ready(function(){
 	    	$(".recipeContainer").append('<div class="recipe" id='+recipeID+'>'+savedName+'<button type="submit" class="btn btn-default removeRecipe">-</button></div>');
 		    $(".removeRecipe").on("click", function(childSnapshot, prevChildKey) {
 		    	console.log(savedName);
-		    	listRef.child(user.recipe.number).remove();
+		    	listRef.child(number).remove();
 		    	$("#"+recipeID+"").remove();
 		    });
 	    });
