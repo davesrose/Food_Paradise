@@ -125,11 +125,10 @@ $(document).ready(function(){
 
 	    listRef.on("child_added", function(childSnapshot, prevChildKey) {
 	    	event.preventDefault();
-	    	var con = listRef.child(recipe.number);
 	    	// var savedRecipe = childSnapshot.val().recipeID;
 	    	// var savedName = childSnapshot.val().recipeName;
-	    	var savedRecipe = con.ref("recipeId").val();
-	    	var savedName = con.ref("recipeName").val();
+	    	var savedRecipe = childSnapshot.val().recipe.recipeID;
+	    	var savedName = childSnapshot.val().recipe.recipeName;
 	    	$(".recipeContainer").append('<div class="recipe" id='+recipeID+'>'+savedName+'<button type="submit" class="btn btn-default removeRecipe">-</button></div>');
 		    $(".removeRecipe").on("click", function(childSnapshot, prevChildKey) {
 		    	console.log(savedName);
