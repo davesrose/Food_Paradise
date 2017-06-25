@@ -110,7 +110,7 @@ $(document).ready(function(){
 		    // User is signed in.
 			    recipe.number = recipe.number+1;
 				listRef.set(recipe.number);
-			    listRef.update({
+			    listRef.child(recipe.number).update({
 			        recipeId: recipeID,
 			        recipeName: recipeName
 			    });
