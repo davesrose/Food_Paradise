@@ -109,9 +109,8 @@ $(document).ready(function(){
 		  if (user) {
 		    // User is signed in.
 			    recipe.number = recipe.number+1;
-	            con = listRef.child(recipe.number);
-	            con.set(recipe);
-			    con.update({
+				listRef.set(recipe.number);
+			    listRef.ref(recipe.number).update({
 			        recipeId: recipeID,
 			        recipeName: recipeName
 			    });
@@ -127,8 +126,8 @@ $(document).ready(function(){
 	    	event.preventDefault();
 	    	// var savedRecipe = childSnapshot.val().recipeID;
 	    	// var savedName = childSnapshot.val().recipeName;
-	    	var savedRecipe = childSnapshot.val().recipe.recipeID;
-	    	var savedName = childSnapshot.val().recipe.recipeName;
+	    	var savedRecipe = childSnapshot.val().recipeId;
+	    	var savedName = childSnapshot.val().recipeName;
 	    	$(".recipeContainer").append('<div class="recipe" id='+recipeID+'>'+savedName+'<button type="submit" class="btn btn-default removeRecipe">-</button></div>');
 		    $(".removeRecipe").on("click", function(childSnapshot, prevChildKey) {
 		    	console.log(savedName);
