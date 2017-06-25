@@ -128,11 +128,11 @@ $(document).ready(function(){
 	    	// var savedName = childSnapshot.val().recipeName;
 	    	var savedRecipe = childSnapshot.val().recipeId;
 	    	var savedName = childSnapshot.val().recipeName;
-	    	$(".recipeContainer").append('<div class="recipe" id='+recipeID+'>'+savedName+'<button type="submit" class="btn btn-default removeRecipe">-</button></div>');
+	    	$(".recipeContainer").append('<div class="recipe" id='+savedRecipe+'>'+savedName+'<button type="submit" class="btn btn-default removeRecipe">-</button></div>');
 		    $(".removeRecipe").on("click", function(childSnapshot, prevChildKey) {
 		    	console.log(savedName);
-		    	listRef.child(number).remove();
-		    	$("#"+recipeID+"").remove();
+		    	childSnapshot.remove();
+		    	$("#"+savedRecipe+"").remove();
 		    });
 	    });
 
