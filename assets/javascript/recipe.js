@@ -104,14 +104,17 @@ $(document).ready(function(){
     // });
 	$(".save").on("click", function(event) {
 	    event.preventDefault();
+	    var con;
 		firebase.auth().onAuthStateChanged(function(user) {
 		  if (user) {
 		    // User is signed in.
 			    recipe.number = recipe.number+1;
-			    listRef.set({
+	            con = listRef.child(recipe.number);
+	            con.set(recipe);
+			    con.update({
 			    	number: recipe.number
 			    })
-			    listRef.child(number).set({
+			    con.child(number).update({
 			        recipeId: recipeID,
 			        recipeName: recipeName
 			    });
