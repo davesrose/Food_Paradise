@@ -112,9 +112,6 @@ $(document).ready(function(){
 	            con = listRef.child(recipe.number);
 	            con.set(recipe);
 			    con.update({
-			    	number: recipe.number
-			    })
-			    con.child(number).update({
 			        recipeId: recipeID,
 			        recipeName: recipeName
 			    });
