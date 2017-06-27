@@ -64,7 +64,7 @@ $(document).ready(function(){
       }
       var cals = Math.round(9*fat+4*carbs+4*protein);
       var recipeSource = response.source.sourceRecipeUrl;
-      recipeSource.replace("http:", "https:");
+      recipeSource.replace("http://", "");
 	  for (var i = 0; i < response.ingredientLines.length; i++) {
       	var ingredients = response.ingredientLines[i]
       	console.log(ingredients);
