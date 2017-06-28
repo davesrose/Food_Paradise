@@ -10,16 +10,10 @@ $(document).ready(function() {
     messagingSenderId: "698241980106"
   };
   firebase.initializeApp(config);
-  var database = firebase.database();
+
   // FirebaseUI config.
       var uiConfig = {
-        signInSuccessUrl: '/',
-        'callbacks': {
-          'signInSuccess' : function(user, credential, redirectUrl) {
-            console.log(user)
-            $("#signIn_box").modal("hide");
-          }
-        },
+        signInSuccessUrl: 'https://davesrose.github.io/Food_Paradise/',
         signInOptions: [
           // Leave the lines as is for the providers you want to offer your users.
           firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -29,18 +23,13 @@ $(document).ready(function() {
         tosUrl: '<your-tos-url>'
       };
 
-firebase.auth().signOut()
- .catch(function (err) {
-   // Handle errors
- });
-
       // Initialize the FirebaseUI Widget using Firebase.
       var ui = new firebaseui.auth.AuthUI(firebase.auth());
       // The start method will wait until the DOM is loaded.
       ui.start('#firebaseui-auth-container', uiConfig);
 
   //User database additions
-  
+  var database = firebase.database();
   // console.log("recipe ID: "+recipeID+" recipe Name: "+recipeName);
 
   // $(".save").on("click", function(event) {
