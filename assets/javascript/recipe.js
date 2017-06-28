@@ -63,7 +63,7 @@ $(document).ready(function(){
       	}
       }
       var cals = Math.round(9*fat+4*carbs+4*protein);
-      var recipeSource = response.source.sourceRecipeUrl.replace("http:" , "link:");
+      var recipeSource = response.source.sourceRecipeUrl;
 	  for (var i = 0; i < response.ingredientLines.length; i++) {
       	var ingredients = response.ingredientLines[i]
       	console.log(ingredients);
@@ -94,6 +94,7 @@ $(document).ready(function(){
     var recipe = {
         number: 0
     };
+    var usersRef = ref.child("users");
     // presenceRef.on("value", function(snap) {
     //   if (snap.val()) {
     //     // Remove ourselves when we disconnect.
@@ -104,64 +105,35 @@ $(document).ready(function(){
     // });
 	$(".save").on("click", function(event) {
 	    event.preventDefault();
-      // Initialize the FirebaseUI Widget using Firebase.
-      var ui = new firebaseui.auth.AuthUI(firebase.auth());
-      // The start method will wait until the DOM is loaded.
-      ui.start('#firebaseui-auth-container', uiConfig);
-      initApp = function() {
-        firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
-            // User is signed in.
-            var displayName = user.displayName;
-            var email = user.email;
-            var emailVerified = user.emailVerified;
-            var photoURL = user.photoURL;
-            var uid = user.uid;
-            var phoneNumber = user.phoneNumber;
-            var providerData = user.providerData;
-            user.getIdToken().then(function(accessToken) {
-              document.getElementById('sign-in-status').textContent = 'Signed in';
-              document.getElementById('sign-in').textContent = 'Sign out';
-              document.getElementById('account-details').textContent = JSON.stringify({
-                displayName: displayName,
-                email: email,
-                emailVerified: emailVerified,
-                phoneNumber: phoneNumber,
-                photoURL: photoURL,
-                uid: uid,
-                accessToken: accessToken,
-                providerData: providerData
-              }, null, '  ');
-            });
+		firebase.auth().onAuthStateChanged(function(user) {
+		  if (user) {
+		    // User is signed in.
 			    recipe.number = recipe.number+1;
-				listRef.push(recipe.number);
-			    listRef.child(recipe.number).update({
+				usersRef.push(recipe.number);
+			    usersRef.child(recipe.number).update({
 			        recipeId: recipeID,
 			        recipeName: recipeName
 			    });
-			    console.log("recipe ID: "+recipeID+" recipe Name: "+recipeName);            
-          } else {
-            // User is signed out.
-            document.getElementById('sign-in-status').textContent = 'Signed out';
-            document.getElementById('sign-in').textContent = 'Sign in';
-            document.getElementById('account-details').textContent = 'null';
-            $("#signIn_box").modal("show");
-          }
-        }, function(error) {
-          console.log(error);
-        });
-      };
-
-      window.addEventListener('load', function() {
-        initApp()
-      });
+			    console.log("recipe ID: "+recipeID+" recipe Name: "+recipeName);
+		  } else {
+		    // No user is signed in.
+		    // $("#signIn_box").modal("show");
+		  }
+		});
 	});
 
     listRef.on("child_added", function(childSnapshot, prevChildKey) {
     	event.preventDefault();
     	// var savedRecipe = childSnapshot.val().recipeID;
     	// var savedName = childSnapshot.val().recipeName;
-
+	    	var savedRecipe = childSnapshot.val().recipeID;
+	    	var savedName = childSnapshot.val().recipeName;
+	    	$(".recipeContainer").append('<div class="recipe" id="'+savedRecipe+'">'+savedName+'<button type="submit" class="btn btn-default removeRecipe">-</button></div>');
+		    $(".removeRecipe").on("click", function(childSnapshot, prevChildKey) {
+		    	console.log(savedName);
+		    	listRef.child(recipe.number).remove();
+		    	$("#"+savedRecipe+"").remove();
+		    });
     });
 
       console.log("Cals: "+cals+" sodium: "+sodium+" fat: "+fat+" carbs: "+carbs+" protein: "+protein+" potassium: "+potassium);
