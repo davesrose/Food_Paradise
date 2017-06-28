@@ -105,9 +105,6 @@ $(document).ready(function(){
 	$(".save").on("click", function(event) {
 	    event.preventDefault();
 	    var con;
-		firebase.auth().onAuthStateChanged(function(user) {
-		  if (user) {
-		    // User is signed in.
 			    recipe.number = recipe.number+1;
 				listRef.push(recipe.number);
 			    listRef.child(recipe.number).update({
@@ -115,11 +112,15 @@ $(document).ready(function(){
 			        recipeName: recipeName
 			    });
 			    console.log("recipe ID: "+recipeID+" recipe Name: "+recipeName);
-		  } else {
-		    // No user is signed in.
-		    // $("#signIn_box").modal("show");
-		  }
-		});
+		// firebase.auth().onAuthStateChanged(function(user) {
+		//   if (user) {
+		//     // User is signed in.
+
+		//   } else {
+		//     // No user is signed in.
+		//     // $("#signIn_box").modal("show");
+		//   }
+		// });
 	});
 
 	    listRef.on("child_added", function(childSnapshot, prevChildKey) {
