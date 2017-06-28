@@ -94,7 +94,6 @@ $(document).ready(function(){
     var recipe = {
         number: 0
     };
-    var usersRef = ref.child("users");
     // presenceRef.on("value", function(snap) {
     //   if (snap.val()) {
     //     // Remove ourselves when we disconnect.
@@ -105,12 +104,13 @@ $(document).ready(function(){
     // });
 	$(".save").on("click", function(event) {
 	    event.preventDefault();
+	    var con;
 		firebase.auth().onAuthStateChanged(function(user) {
 		  if (user) {
 		    // User is signed in.
 			    recipe.number = recipe.number+1;
-				usersRef.push(recipe.number);
-			    usersRef.child(recipe.number).update({
+				listRef.push(recipe.number);
+			    listRef.child(recipe.number).update({
 			        recipeId: recipeID,
 			        recipeName: recipeName
 			    });
@@ -122,10 +122,10 @@ $(document).ready(function(){
 		});
 	});
 
-    listRef.on("child_added", function(childSnapshot, prevChildKey) {
-    	event.preventDefault();
-    	// var savedRecipe = childSnapshot.val().recipeID;
-    	// var savedName = childSnapshot.val().recipeName;
+	    listRef.on("child_added", function(childSnapshot, prevChildKey) {
+	    	event.preventDefault();
+	    	// var savedRecipe = childSnapshot.val().recipeID;
+	    	// var savedName = childSnapshot.val().recipeName;
 	    	var savedRecipe = childSnapshot.val().recipeID;
 	    	var savedName = childSnapshot.val().recipeName;
 	    	$(".recipeContainer").append('<div class="recipe" id="'+savedRecipe+'">'+savedName+'<button type="submit" class="btn btn-default removeRecipe">-</button></div>');
@@ -134,7 +134,7 @@ $(document).ready(function(){
 		    	listRef.child(recipe.number).remove();
 		    	$("#"+savedRecipe+"").remove();
 		    });
-    });
+	    });
 
       console.log("Cals: "+cals+" sodium: "+sodium+" fat: "+fat+" carbs: "+carbs+" protein: "+protein+" potassium: "+potassium);
     });
