@@ -181,6 +181,7 @@ $(document).ready(function(){
 	      localStorage.setItem("foodName",foodName);
 	      yummlyResponse(foodName);
 	    }).fail(function (jqXHR, textStatus, errorThrown) {
+	    	$(".nutritionix").show();
 	    	$(".foodID").html("Food not found. Try typing in or scanning another.");
 	    	var foodName = "";
 	    	localStorage.setItem("foodName",foodName);
@@ -227,4 +228,22 @@ $(document).ready(function(){
 	    localStorage.setItem("foodName",foodName);
 	    yummlyResponse(foodName);
 	});
+	$(".signin").on("click", function() {
+		$("#signIn_box").modal("show");
+	});
+	if (screen.width > 720) {
+		$(".barcodeScanner button").html("Barcode Scanner");
+		$(".signin img").css({
+			width : "80%",
+			"margin-left" : "10%",
+			"margin-top" : "5%"
+		});
+	} else {
+		$(".barcodeScanner button").html("Scan");
+		$(".signin img").css({
+			width : "100%",
+			"margin-left" : "0px",
+			"margin-top" : "0px"
+		});
+	}
 });

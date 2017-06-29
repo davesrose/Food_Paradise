@@ -272,7 +272,7 @@ position: relative;
 } 
 .accountRecipe {
 	color: #fff;
-	position: absolute;
+	position: fixed;
 	width: 28%;
 	bottom: 0px;
 	right: 0px;
@@ -362,4 +362,74 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', end
 	font-size: 80%;
 	letter-spacing: 1px;
 	font-stretch: ultra-condensed;
+}
+.logout {
+	font-family: 'Overpass', sans-serif;
+	width: 95%;
+	float: left;
+	padding: 12% 0px;
+	margin: 2% 0px;
+	text-align: center;
+	background: transparent;
+	background-color: #61afd3;
+	text-shadow: none;
+	color: #fff;
+	font-weight: 500;
+	z-index: 11;
+}
+@media screen and (min-width: 720px) {
+	.return {
+		position: absolute;
+		padding-left: 2%;
+		padding-right: 2%;
+		padding-top: 3.5%;
+		padding-bottom: 3.5%;
+		font-size: 140%;
+		top: 0px;
+		left: 0px;
+		width:14%;
+		background-color: #8de0e0;
+		border-radius: 12px;
+		border: solid 2px #CCC;
+		text-align: center;
+	}
+	.name {
+		text-align: center;
+		max-width: 70%;
+		margin: 0 auto;
+	}
+	.title {
+		margin-top: 28px;
+	}
+	.save {
+		position: absolute;
+		padding-right: 2%;
+		padding-left: 2%;
+		padding-top: 3.5%;
+		padding-bottom: 3.5%;
+		font-size: 140%;
+		text-align: right;
+		right: 0px;
+		top: 0px;
+		width:14%;
+		background-color: #e8a965;
+		border-radius: 12px;
+		border: solid 2px #CCC;
+		text-align: center;
+	}	
+	.recipeList {
+		padding: 2% 2% 2.5%;
+		border-radius: 12px;
+		margin: 10px auto;
+		background-color: #e8a965;
+	}
+	.recipeList ul {
+		text-decoration: none;
+		list-style: none;
+		font-family: 'Lato', sans-serif;
+		font-size: 110%;
+	}
+	.recipeList ul li {
+		margin-left: -2%;
+	}
 }

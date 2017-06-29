@@ -1,5 +1,5 @@
 //User Authentication and database storage
-//$(document).ready(function() {
+$(document).ready(function() {
   // Initialize Firebase
   var config = {
     apiKey: "AIzaSyDi2g588bcWLXFwdCjviNcxOLMGQapxjbU",
@@ -11,26 +11,26 @@
   };
   firebase.initializeApp(config);
 
-  // // FirebaseUI config.
-  //     var uiConfig = {
-  //       signInSuccessUrl: 'https://davesrose.github.io/Food_Paradise/',
-  //       signInOptions: [
-  //         // Leave the lines as is for the providers you want to offer your users.
-  //         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-  //         firebase.auth.EmailAuthProvider.PROVIDER_ID
-  //       ],
-  //       // Terms of service url.
-  //       tosUrl: '<your-tos-url>'
-  //     };
+  // FirebaseUI config.
+      var uiConfig = {
+        signInSuccessUrl: 'https://davesrose.github.io/Food_Paradise/',
+        signInOptions: [
+          // Leave the lines as is for the providers you want to offer your users.
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.EmailAuthProvider.PROVIDER_ID
+        ],
+        // Terms of service url.
+        tosUrl: '<your-tos-url>'
+      };
 
-  //     // Initialize the FirebaseUI Widget using Firebase.
-  //     var ui = new firebaseui.auth.AuthUI(firebase.auth());
-  //     // The start method will wait until the DOM is loaded.
-  //     ui.start('#firebaseui-auth-container', uiConfig);
+      // Initialize the FirebaseUI Widget using Firebase.
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      // The start method will wait until the DOM is loaded.
+      ui.start('#firebaseui-auth-container', uiConfig);
 
   //User database additions
   var database = firebase.database();
-  console.log("recipe ID: "+recipeID+" recipe Name: "+recipeName);
+  // console.log("recipe ID: "+recipeID+" recipe Name: "+recipeName);
 
   // $(".save").on("click", function(event) {
   //   event.preventDefault();
@@ -63,4 +63,4 @@
   // database.ref().on("child_added", function(childSnapshot, prevChildKey) {
   //   var savedRecipe = childSnapshot.val().recipeId;
   // }
-//});
+});

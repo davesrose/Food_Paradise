@@ -3,7 +3,6 @@ $(document).ready(function(){
 		"overflow" : "hidden",
 		height : 0
 	});
-
 	(function($) {
 	    $.fn.clickToggle = function(func1, func2) {
 	        var funcs = [func1, func2];
@@ -17,7 +16,6 @@ $(document).ready(function(){
 	        return this;
 	    };
 	}(jQuery));
-	
 	$('.accountRecipe h2,.accountRecipe .bottom,.accountRecipe .tab').clickToggle(function() {   
 	    $('.recipeContainer').animate({
     		height: $('.recipeContainer').get(0).scrollHeight
@@ -30,7 +28,6 @@ $(document).ready(function(){
 	        height: 0
 	    }, 1000);
 	});
-
 	// var recipeID = "Golden-Raisin-Rosemary-Oatmeal-Cookies-1785227"
 	var recipeID = localStorage.getItem("recipeID");
 	var queryURL = "https://api.yummly.com/v1/api/recipe/"+recipeID+"?_app_id=069691a5&_app_key=3944fb993fe2cb009e5e6a5fd1e4facb"
@@ -79,7 +76,7 @@ $(document).ready(function(){
       $("#recipeModal").on("click", function() {
       		$(".directionsHTML").html("<iframe src='"+recipeSource+"'></iframe>");
   		});
-      $(".recipeContainer").empty()
+      // $(".recipeContainer").empty()
 
   var config = {
     apiKey: "AIzaSyDi2g588bcWLXFwdCjviNcxOLMGQapxjbU",
@@ -91,8 +88,23 @@ $(document).ready(function(){
   };
   firebase.initializeApp(config);
   var database = firebase.database();
-	  $(".save").on("click", function(event) {
+    var listRef = database.ref("presence");
+    var userRef = listRef.push();
+    var presenceRef = database.ref(".info/connected");
+    var recipe = {
+        number: 0
+    };
+    // presenceRef.on("value", function(snap) {
+    //   if (snap.val()) {
+    //     // Remove ourselves when we disconnect.
+    //     // userRef.onDisconnect().remove();
+
+    //     userRef.set(true);
+    //   }
+    // });
+	$(".save").on("click", function(event) {
 	    event.preventDefault();
+<<<<<<< HEAD
       //Build array of recipeIDs from DB
       for (var i = Things.length - 1; i >= 0; i--) {
         Things[i]
@@ -106,14 +118,62 @@ $(document).ready(function(){
 	    });
 	    console.log("recipe ID: "+recipeID+" recipe Name: "+recipeName);
 	    database.ref().on("child_added", function(childSnapshot, prevChildKey) {
+=======
+	    var con;
+			    recipe.number = recipe.number+1;
+				listRef.push(recipe.number);
+			    listRef.child(recipe.number).update({
+			        recipeId: recipeID,
+			        recipeName: recipeName
+			    });
+			    console.log("recipe ID: "+recipeID+" recipe Name: "+recipeName);
+		// firebase.auth().onAuthStateChanged(function(user) {
+		//   if (user) {
+		//     // User is signed in.
+
+		//   } else {
+		//     // No user is signed in.
+		//     // $("#signIn_box").modal("show");
+		//   }
+		// });
+	});
+
+	    listRef.on("child_added", function(childSnapshot, prevChildKey) {
+>>>>>>> master
 	    	event.preventDefault();
+	    	// var savedRecipe = childSnapshot.val().recipeID;
+	    	// var savedName = childSnapshot.val().recipeName;
 	    	var savedRecipe = childSnapshot.val().recipeID;
 	    	var savedName = childSnapshot.val().recipeName;
-
-	    	$(".recipeContainer").append('<div class="recipe">'+savedName+'<button type="submit" class="btn btn-default">-</button></div>');
-	    })
-	});
+	    	$(".recipeContainer").append('<div class="recipe" id="'+savedRecipe+'">'+savedName+'<button type="submit" class="btn btn-default removeRecipe">-</button></div>');
+		    $(".removeRecipe").on("click", function(childSnapshot, prevChildKey) {
+		    	console.log(savedName);
+		    	listRef.child(recipe.number).remove();
+		    	$("#"+savedRecipe+"").remove();
+		    });
+	    });
 
       console.log("Cals: "+cals+" sodium: "+sodium+" fat: "+fat+" carbs: "+carbs+" protein: "+protein+" potassium: "+potassium);
     });
+	$(".signin").on("click", function() {
+		$("#signIn_box").modal("show");
+	});
+	if (screen.width > 720) {
+		$(".barcodeScanner button").html("Barcode Scanner");
+		$(".signin img").css({
+			width : "80%",
+			"margin-left" : "10%",
+			"margin-top" : "5%"
+		});
+	} else {
+		$(".barcodeScanner button").html("Scan");
+		$(".signin img").css({
+			width : "100%",
+			"margin-left" : "0px",
+			"margin-top" : "0px"
+		});
+	}
+
+	//if user is not signed in, start button first opens user sign in modal:
+
 });
