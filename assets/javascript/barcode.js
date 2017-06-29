@@ -22,6 +22,7 @@ $(document).ready(function(){
 	        return this;
 	    };
 	}(jQuery));
+
 	$('.foodInputCon h2,.foodInputCon .bottom,.foodInputCon .tab').clickToggle(function() {   
 	    $('.foodInput').animate({
     		height: $('.foodInput').get(0).scrollHeight
@@ -181,7 +182,6 @@ $(document).ready(function(){
 	      localStorage.setItem("foodName",foodName);
 	      yummlyResponse(foodName);
 	    }).fail(function (jqXHR, textStatus, errorThrown) {
-	    	$(".nutritionix").show();
 	    	$(".foodID").html("Food not found. Try typing in or scanning another.");
 	    	var foodName = "";
 	    	localStorage.setItem("foodName",foodName);
@@ -231,19 +231,63 @@ $(document).ready(function(){
 	$(".signin").on("click", function() {
 		$("#signIn_box").modal("show");
 	});
-	if (screen.width > 720) {
-		$(".barcodeScanner button").html("Barcode Scanner");
-		$(".signin img").css({
-			width : "80%",
-			"margin-left" : "10%",
-			"margin-top" : "5%"
-		});
-	} else {
-		$(".barcodeScanner button").html("Scan");
-		$(".signin img").css({
-			width : "100%",
-			"margin-left" : "0px",
-			"margin-top" : "0px"
-		});
-	}
+
+	   const config = {
+	    apiKey: "AIzaSyDi2g588bcWLXFwdCjviNcxOLMGQapxjbU",
+	    authDomain: "food-paradise-8ef13.firebaseapp.com",
+	    databaseURL: "https://food-paradise-8ef13.firebaseio.com",
+	    projectId: "food-paradise-8ef13",
+	    storageBucket: "food-paradise-8ef13.appspot.com",
+	    messagingSenderId: "698241980106"
+	  };
+	  firebase.initializeApp(config);
+	  var database = firebase.database();
+	  //add a realtime listener
+	  firebase.auth().onAuthStateChanged(firebaseUser => {
+	    if(firebaseUser) {
+	      console.log(firebaseUser);
+	      console.log(firebaseUser.uid)
+	        database.ref("/user/" + firebaseUser.uid).on("child_added", function(childSnapshot, prevChildKey) {
+	          var key = childSnapshot.val();
+	          var snap = childSnapshot.key;
+	          // console.log(key);
+	          var recipeLine = '<div class="recipe" id="'+key.recipeId+'" data-recipekey="'+snap+'">'+key.recipeName+'<button type="submit" class="btn btn-default remove" data-recipekey="'+snap+'">-</button></div><div class="line"></div>';
+	          // console.log(recipeLine);
+	          $(".recipeContainer").append(recipeLine);
+
+
+	          $(".remove").on("click", function(childSnapshot) {
+	          	var recipeRemove = $(this).parent().attr("id");
+	          	console.log(recipeRemove);
+	          	if (recipeRemove === key.recipeId) {
+	          		console.log(key);
+	          		console.log(database.ref("/user/" + firebaseUser.uid+"/"+snap));
+	          		database.ref("/user/" + firebaseUser.uid+"/"+snap).remove();
+	          		$(this).parent().remove();
+	          	};
+	          });
+
+	        });
+
+
+	    } else {
+	      console.log("not logged in")
+	    }
+	  })
+
+// function updateDelete(){
+//           var key = this.getAttribute("data-recipekey");
+//            console.log(key);
+//            console.log('user/'+ firebaseUser.uid +'/' + key);
+//         if (confirm("Do you want to delete this row?") == true) {
+//             console.log("You pressed OK!");
+//             database.ref('user/'+ firebaseUser.uid +'/' + key).remove();
+//           } else {
+//             alert("You pressed Cancel!");
+//                return;
+//           }
+//     };
+
+//     $(document).on("click", ".removeRecipe", updateDelete);
+
 });

@@ -20,10 +20,8 @@
 	#interactive.viewport > canvas, #interactive.viewport > video {max-width: 100%;width: 100%;}
 	canvas.drawing, canvas.drawingBuffer {position: absolute; left: 0; top: 0;}
 </style>
-
+<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 <script type="text/javascript" src="assets/javascript/barcode.js"></script>
-<!-- <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
-<script type="text/javascript" src="assets/javascript/uaDBstore.js"></script> -->
 <link href="https://fonts.googleapis.com/css?family=Overpass" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
@@ -59,11 +57,7 @@
 		<div class="account">
 			<h2>Recipes</h2>
 			<div class="recipeContainer">
-				<div class="signin"><img src="assets/images/GoogleIcon.png"></div>
-				<div class="recipe">Recipe 1<button type="submit" class="btn btn-default">-</button></div>
-				<div class="line"></div>
-				<div class="recipe">Recipe 2<button type="submit" class="btn btn-default">-</button></div>
-				<button type="submit" class="btn btn-default logout">Log Out</button>
+				<div class="signin"><img src="assets/images/googleIcon.png"></div>
 			</div>
 			<div class="bottom"></div>
 			<div class="tab"></div>
@@ -103,6 +97,7 @@
 </div><!-- /.modal -->
 
 
+
 <div class="modal" id="signIn_box">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -110,10 +105,10 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title">Sign-In to to save recipes</h4>
+				<h4 class="modal-title">Sign-In to save recipes</h4>
 			</div>
 			<div class="modal-body" style="position: static">
-				<iframe src="https://davesrose.github.io/Food_Paradise/authenticationPage.html"></iframe>
+				<iframe src="authenticationPage.html"></iframe>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -121,7 +116,6 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 
 </body>
 </html>
