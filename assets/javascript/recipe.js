@@ -3,6 +3,7 @@ $(document).ready(function(){
 		"overflow" : "hidden",
 		height : 0
 	});
+
 	(function($) {
 	    $.fn.clickToggle = function(func1, func2) {
 	        var funcs = [func1, func2];
@@ -16,6 +17,7 @@ $(document).ready(function(){
 	        return this;
 	    };
 	}(jQuery));
+	
 	$('.accountRecipe h2,.accountRecipe .bottom,.accountRecipe .tab').clickToggle(function() {   
 	    $('.recipeContainer').animate({
     		height: $('.recipeContainer').get(0).scrollHeight
@@ -28,6 +30,7 @@ $(document).ready(function(){
 	        height: 0
 	    }, 1000);
 	});
+
 	// var recipeID = "Golden-Raisin-Rosemary-Oatmeal-Cookies-1785227"
 	var recipeID = localStorage.getItem("recipeID");
 	var queryURL = "https://api.yummly.com/v1/api/recipe/"+recipeID+"?_app_id=069691a5&_app_key=3944fb993fe2cb009e5e6a5fd1e4facb"
@@ -76,29 +79,32 @@ $(document).ready(function(){
       $("#recipeModal").on("click", function() {
       		$(".directionsHTML").html("<iframe src='"+recipeSource+"'></iframe>");
   		});
-      // $(".recipeContainer").empty()
 
-  var config = {
-    apiKey: "AIzaSyDi2g588bcWLXFwdCjviNcxOLMGQapxjbU",
-    authDomain: "food-paradise-8ef13.firebaseapp.com",
-    databaseURL: "https://food-paradise-8ef13.firebaseio.com",
-    projectId: "food-paradise-8ef13",
-    storageBucket: "food-paradise-8ef13.appspot.com",
-    messagingSenderId: "698241980106"
-  };
-  firebase.initializeApp(config);
-  var database = firebase.database();
-    var listRef = database.ref("presence");
-    var userRef = listRef.push();
-    var presenceRef = database.ref(".info/connected");
-    var recipe = {
-        number: 0
-    };
-    // presenceRef.on("value", function(snap) {
-    //   if (snap.val()) {
-    //     // Remove ourselves when we disconnect.
-    //     // userRef.onDisconnect().remove();
+      //view and generate recipe list
+	   const config = {
+	    apiKey: "AIzaSyDi2g588bcWLXFwdCjviNcxOLMGQapxjbU",
+	    authDomain: "food-paradise-8ef13.firebaseapp.com",
+	    databaseURL: "https://food-paradise-8ef13.firebaseio.com",
+	    projectId: "food-paradise-8ef13",
+	    storageBucket: "food-paradise-8ef13.appspot.com",
+	    messagingSenderId: "698241980106"
+	  };
+	  firebase.initializeApp(config);
+	  var database = firebase.database();
+	  //add a realtime listener
+	  firebase.auth().onAuthStateChanged(firebaseUser => {
+	    if(firebaseUser) {
+	      console.log(firebaseUser);
+	      console.log(firebaseUser.uid)
+	        database.ref("/user/" + firebaseUser.uid).on("child_added", function(childSnapshot, prevChildKey) {
+	          var key = childSnapshot.val();
+	          var snap = childSnapshot.key;
+	          // console.log(key);
+	          var recipeLine = '<div class="recipe" id="'+key.recipeId+'" data-recipekey="'+snap+'">'+key.recipeName+'<button type="submit" class="btn btn-default remove" data-recipekey="'+snap+'">-</button></div><div class="line"></div>';
+	          // console.log(recipeLine);
+	          $(".recipeContainer").append(recipeLine);
 
+<<<<<<< HEAD
     //     userRef.set(true);
     //   }
     // });
@@ -130,14 +136,21 @@ $(document).ready(function(){
 		// firebase.auth().onAuthStateChanged(function(user) {
 		//   if (user) {
 		//     // User is signed in.
+=======
+>>>>>>> master
 
-		//   } else {
-		//     // No user is signed in.
-		//     // $("#signIn_box").modal("show");
-		//   }
-		// });
-	});
+	          $(".remove").on("click", function(childSnapshot) {
+	          	var recipeRemove = $(this).parent().attr("id");
+	          	console.log(recipeRemove);
+	          	if (recipeRemove === key.recipeId) {
+	          		console.log(key);
+	          		console.log(database.ref("/user/" + firebaseUser.uid+"/"+snap));
+	          		database.ref("/user/" + firebaseUser.uid+"/"+snap).remove();
+	          		$(this).parent().remove();
+	          	};
+	          });
 
+<<<<<<< HEAD
 	    listRef.on("child_added", function(childSnapshot, prevChildKey) {
 >>>>>>> master
 	    	event.preventDefault();
@@ -152,9 +165,31 @@ $(document).ready(function(){
 		    	$("#"+savedRecipe+"").remove();
 		    });
 	    });
+=======
+	        });
 
-      console.log("Cals: "+cals+" sodium: "+sodium+" fat: "+fat+" carbs: "+carbs+" protein: "+protein+" potassium: "+potassium);
-    });
+	    } else {
+	      console.log("not logged in")
+			// $("#signIn_box").modal("show");
+	    }
+	  })
+
+	  //push new recipe key
+    $(".save").on("click", function(firebaseUser) {
+	      event.preventDefault();
+	  firebase.auth().onAuthStateChanged(firebaseUser => {
+	    if(firebaseUser) {
+		      database.ref("/user/" + firebaseUser.uid).push({
+		          recipeId: recipeID,
+		          recipeName: recipeName
+		      });
+		  } else {
+		  	$("#signIn_box").modal("show");
+		  }
+	  	});
+	});
+>>>>>>> master
+
 	$(".signin").on("click", function() {
 		$("#signIn_box").modal("show");
 	});
@@ -174,6 +209,5 @@ $(document).ready(function(){
 		});
 	}
 
-	//if user is not signed in, start button first opens user sign in modal:
-
+    });
 });
