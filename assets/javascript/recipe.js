@@ -100,7 +100,7 @@ $(document).ready(function(){
 	          var key = childSnapshot.val();
 	          var snap = childSnapshot.key;
 	          // console.log(key);
-	          var recipeLine = '<div class="recipe" id="'+key.recipeId+'" data-recipekey="'+snap+'">'+key.recipeName+'<button type="submit" class="btn btn-default remove" data-recipekey="'+snap+'">-</button></div><div class="line"></div>';
+	          var recipeLine = '<div class="recipe" id="'+key.recipeId+'" data-recipekey="'+snap+'"><span>'+key.recipeName+'</span><button type="submit" class="btn btn-default remove" data-recipekey="'+snap+'">-</button></div><div class="line"></div>';
 	          // console.log(recipeLine);
 	          $(".recipeContainer").append(recipeLine);
 
