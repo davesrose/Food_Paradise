@@ -1,10 +1,11 @@
 $(document).ready(function(){
-	$(".recipeContainer").css({
+	$(".savedDialogue").hide(); //hide top layer that is used for alerting user of a saved recipe
+	$(".recipeContainer").css({ //collapse the recipe list
 		"overflow" : "hidden",
 		height : 0
 	});
 
-	(function($) {
+	(function($) { //a function for creating a click toggle
 	    $.fn.clickToggle = function(func1, func2) {
 	        var funcs = [func1, func2];
 	        this.data('toggleclicked', 0);
@@ -18,7 +19,7 @@ $(document).ready(function(){
 	    };
 	}(jQuery));
 	
-	$('.accountRecipe h2,.accountRecipe .bottom,.accountRecipe .tab').clickToggle(function() {   
+	$('.accountRecipe h2,.accountRecipe .bottom,.accountRecipe .tab').clickToggle(function() { //click toggle for showing recipe list
 	    $('.recipeContainer').animate({
     		height: $('.recipeContainer').get(0).scrollHeight
 		}, 1000, function(){
@@ -31,8 +32,8 @@ $(document).ready(function(){
 	    }, 1000);
 	});
 
-	// var recipeID = "Golden-Raisin-Rosemary-Oatmeal-Cookies-1785227"
-	var recipeID = localStorage.getItem("recipeID");
+	var recipeID = localStorage.getItem("recipeID"); //retrieve locally stored recipe ID variable (that was stored either by clicking a recipe link on index.html, or a recipe list)
+	//ajax call query for yummly recipe ID
 	var queryURL = "https://api.yummly.com/v1/api/recipe/"+recipeID+"?_app_id=069691a5&_app_key=3944fb993fe2cb009e5e6a5fd1e4facb"
     $.ajax({
       url: queryURL,
@@ -41,27 +42,27 @@ $(document).ready(function(){
       console.log(queryURL);
       console.log(response);
       var recipeName = response.name;
-      var servingNum = response.numberOfServings;
-      var totalTime = response.totalTime;
-      var rating = Math.round(response.rating);
-      var img = response.images[0].hostedLargeUrl;
-      for (var j = 0; j < response.nutritionEstimates.length; j++) {
-      	if (response.nutritionEstimates[j].description === "Potassium, K") {
-      		var potassium = Math.round(response.nutritionEstimates[j].value*1000);
+      var servingNum = response.numberOfServings; //variable for number of servings
+      var totalTime = response.totalTime;  //variable for total cooking time
+      var rating = Math.round(response.rating); //user rating
+      var img = response.images[0].hostedLargeUrl;  //get recipe's first image url
+      for (var j = 0; j < response.nutritionEstimates.length; j++) {  //creating loop to find nutrition information in a flexible array
+      	if (response.nutritionEstimates[j].description === "Potassium, K") {  //finding potassium value
+      		var potassium = Math.round(response.nutritionEstimates[j].value*1000); //converting to milligrams
       	}
-      	if (response.nutritionEstimates[j].description === "Protein") {
+      	if (response.nutritionEstimates[j].description === "Protein") {  //finding protein value
       		var protein = Math.round(response.nutritionEstimates[j].value);
       	}      	
-       	if (response.nutritionEstimates[j].description === "Total lipid (fat)") {
+       	if (response.nutritionEstimates[j].description === "Total lipid (fat)") {  //finding fat value
       		var fat = Math.round(response.nutritionEstimates[j].value);
       	}  
-       	if (response.nutritionEstimates[j].description === "Sodium, Na") {
+       	if (response.nutritionEstimates[j].description === "Sodium, Na") {  //finding sodium value
       		var sodium = Math.round(response.nutritionEstimates[j].value*1000); // grams
       	}
-       	if (response.nutritionEstimates[j].description === "Carbohydrate, by difference") {
+       	if (response.nutritionEstimates[j].description === "Carbohydrate, by difference") {  //finding carbs value
       		var carbs = Math.round(response.nutritionEstimates[j].value);
       	}
-        if (response.nutritionEstimates[j].description === "Fiber, total dietary") {
+        if (response.nutritionEstimates[j].description === "Fiber, total dietary") {  //finding fiber value
       		var fiber = Math.round(response.nutritionEstimates[j].value);
       	}
       }
@@ -96,6 +97,7 @@ $(document).ready(function(){
 	    if(firebaseUser) {
 	      console.log(firebaseUser);
 	      console.log(firebaseUser.uid)
+	      $(".signin img").attr("src","assets/images/GoogleIconOut.png");
 	        database.ref("/user/" + firebaseUser.uid).on("child_added", function(childSnapshot, prevChildKey) {
 	          var key = childSnapshot.val();
 	          var snap = childSnapshot.key;
@@ -114,41 +116,65 @@ $(document).ready(function(){
 
 	          $(".remove").on("click", function(childSnapshot) {
 	          	var recipeRemove = $(this).parent().attr("id");
-	          	console.log(recipeRemove);
 	          	if (recipeRemove === key.recipeId) {
-	          		console.log(key);
-	          		console.log(database.ref("/user/" + firebaseUser.uid+"/"+snap));
 	          		database.ref("/user/" + firebaseUser.uid+"/"+snap).remove();
+	          		$(this).parent().next(".line").remove();
 	          		$(this).parent().remove();
 	          	};
 	          });
 
 	        });
-
+	        if (firebaseUser !== null) {
+				$(".signin").on("click", function() {
+					firebase.auth().signOut();
+				});
+				$("#signIn_box").modal("hide");
+			}
 	    } else {
-	      console.log("not logged in")
-			// $("#signIn_box").modal("show");
+		    if (firebaseUser === null) {
+				$(".signin").on("click", function() {
+					$("#signIn_box").modal("show");
+				});
+				$("#signIn_box").modal("hide");
+			};
+	    	$(".signin img").attr("src","assets/images/GoogleIcon.png");
+	    	$(".line").remove();
+	    	$(".recipeContainer .recipe").remove();
 	    }
 	  })
 
-	  //push new recipe key
+	  //push new recipe key or open sign in modal if user hasn't signed in yet
+	  var duplicate = false; //variable for checking recipeId duplicates
     $(".save").on("click", function(firebaseUser) {
 	      event.preventDefault();
-	  firebase.auth().onAuthStateChanged(firebaseUser => {
-	    if(firebaseUser) {
-		      database.ref("/user/" + firebaseUser.uid).push({
-		          recipeId: recipeID,
-		          recipeName: recipeName
-		      });
+	  firebase.auth().onAuthStateChanged(firebaseUser => { //firebase authentication state
+	    if(firebaseUser) { //if signed in
+	        database.ref("/user/" + firebaseUser.uid).on("child_added", function(childSnapshot, prevChildKey) { //go to user's database folder
+	          var key = childSnapshot.val(); //get key objects
+    			if (key.recipeId === recipeID) { //if the recipe's ID is the same as a database recipeId, make duplicate true
+    				duplicate = true;
+	  			} else {
+	  				duplicate = false;				
+	  			}
+			});
+			if (duplicate === true) { //if there is a duplicate, alert that it's already saved
+				$(".savedDialogue div").html("recipe already saved")
+				$(".savedDialogue").fadeIn(500).delay(1000).fadeOut(500);				
+			} else {
+	      		database.ref("/user/" + firebaseUser.uid).push({  //else, push new recipe ID and recipe name to user directory
+	          		recipeId: recipeID,
+	          		recipeName: recipeName
+	      		});
+				$(".savedDialogue div").html(recipeName+" saved")  //alert that recipe name has been saved
+				$(".savedDialogue").fadeIn(500).delay(1000).fadeOut(500);
+			}
+
 		  } else {
-		  	$("#signIn_box").modal("show");
+		  	$("#signIn_box").modal("show"); //if user hasn't been signed in, bring up sign in modal
 		  }
 	  	});
 	});
 
-	$(".signin").on("click", function() {
-		$("#signIn_box").modal("show");
-	});
 	if (screen.width > 720) {
 		$(".barcodeScanner button").html("Barcode Scanner");
 		$(".signin img").css({

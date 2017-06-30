@@ -33,7 +33,7 @@
 
 	<div class="header" style="padding-bottom: 1%;">
 		<div class="foodInputCon">
-			<h2>Input Item</h2>
+			<h2>Find Food</h2>
 			<div class="foodInput">
 				<div class="input-group row">
 					<div>
@@ -53,15 +53,7 @@
 			<div class="bottom"></div>
 			<div class="tab"></div>
 		</div>
-		<h1 class="name title">Food Paradise</h1>
-		<div class="account">
-			<h2>Recipes</h2>
-			<div class="recipeContainer">
-				<div class="signin"><img src="assets/images/GoogleIcon.png"></div>
-			</div>
-			<div class="bottom"></div>
-			<div class="tab"></div>
-		</div>
+		<h1 class="nameMain title">Food Paradise</h1>
 	</div>
 
 	<div class="row nutritionix">
@@ -70,7 +62,17 @@
 	<div class="row Yummly">
 		<div class="col-sm-12 yummlyRecipes"></div>
 	</div>
+	<div class="accountRecipe" style="bottom:0px;">
+		<div class="tab"></div>
+		<div class="bottom"></div>
+		<h2>Recipes</h2>
+		<div class="recipeContainer">
+			<div class="signin"><img src="assets/images/GoogleIcon.png"></div>
+		</div>
+	</div>
 </div>
+
+
 
 <div class="modal" id="livestream_scanner">
 	<div class="modal-dialog">
@@ -108,7 +110,7 @@
 				<h4 class="modal-title">Sign-In to save recipes</h4>
 			</div>
 			<div class="modal-body" style="position: static">
-				<iframe src="authenticationPage.html"></iframe>
+				<iframe src="authenticationPage.html" id="iframe1"></iframe>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>

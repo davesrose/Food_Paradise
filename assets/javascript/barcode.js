@@ -35,7 +35,7 @@ $(document).ready(function(){
 	        "height": "0px"
 	    }, 1000);
 	});
-	$('.account h2,.account .bottom,.account .tab').clickToggle(function() {   
+	$('.accountRecipe h2,.accountRecipe .bottom,.accountRecipe .tab').clickToggle(function() {   
 	    $('.recipeContainer').animate({
     		height: $('.recipeContainer').get(0).scrollHeight
 		}, 1000, function(){
@@ -211,7 +211,7 @@ $(document).ready(function(){
 	      	var thumbnail = response.matches[i].smallImageUrls[0];
 	      	var rating = response.matches[i].rating;
 	      	var source = response.matches[i].sourceDisplayName;
-	      	var foodListings = ("<div data-id='"+foodItems+"' class='recipeOption'><div class='recipeThumb'><img src='"+thumbnail+"'><div class'recipeInfo'><div class='top'>" + recipeName + "</div><div class='recipeBottom'>"+rating+" out of 5<span class='source'>&emsp;Source: "+source+"</span></div></div><div style='clear: left;'></div></div></div>");
+	      	var foodListings = ("<div data-id='"+foodItems+"' class='recipeOption'><div class='recipeThumb'><img src='"+thumbnail+"'><div class'recipeInfo'><div class='top'>" + recipeName + "</div><div class='recipeBottom'>"+rating+"/5<span class='source'>&emsp;Source: "+source+"</span></div></div><div style='clear: left;'></div></div></div>");
 	      	$(".yummlyRecipes").append(foodListings);
 	      }
 	    });
@@ -230,9 +230,6 @@ $(document).ready(function(){
 	    localStorage.setItem("foodName",foodName);
 	    yummlyResponse(foodName);
 	});
-	$(".signin").on("click", function() {
-		$("#signIn_box").modal("show");
-	});
 
 	   const config = {
 	    apiKey: "AIzaSyDi2g588bcWLXFwdCjviNcxOLMGQapxjbU",
@@ -249,12 +246,11 @@ $(document).ready(function(){
 	    if(firebaseUser) {
 	      console.log(firebaseUser);
 	      console.log(firebaseUser.uid)
+	      
 	        database.ref("/user/" + firebaseUser.uid).on("child_added", function(childSnapshot, prevChildKey) {
 	          var key = childSnapshot.val();
 	          var snap = childSnapshot.key;
-	          // console.log(key);
 	          var recipeLine = '<div class="recipe" id="'+key.recipeId+'" data-recipekey="'+snap+'"><span>'+key.recipeName+'</span><button type="submit" class="btn btn-default remove" data-recipekey="'+snap+'">-</button></div><div class="line"></div>';
-	          // console.log(recipeLine);
 	          $(".recipeContainer").append(recipeLine);
 
 			  $(".recipe span").on("click", function() {
@@ -267,23 +263,32 @@ $(document).ready(function(){
 
 	          $(".remove").on("click", function(childSnapshot) {
 	          	var recipeRemove = $(this).parent().attr("id");
-	          	console.log(recipeRemove);
 	          	if (recipeRemove === key.recipeId) {
-	          		console.log(key);
-	          		console.log(database.ref("/user/" + firebaseUser.uid+"/"+snap));
 	          		database.ref("/user/" + firebaseUser.uid+"/"+snap).remove();
+	          		$(this).parent().next(".line").remove();
 	          		$(this).parent().remove();
 	          	};
 	          });
 
 	        });
-
-
+	        $(".signin img").attr("src","assets/images/GoogleIconOut.png");
+	        if (firebaseUser !== null) {
+				$(".signin").on("click", function() {
+					firebase.auth().signOut();
+				});
+				$("#signIn_box").modal("hide");
+			}
 	    } else {
-	      console.log("not logged in")
+		    if (firebaseUser === null) {
+				$(".signin").on("click", function() {
+					$("#signIn_box").modal("show");
+				});
+				$("#signIn_box").modal("hide");
+			};
+	    	$(".line").remove();
+	    	$(".recipeContainer .recipe").remove();
+	    	$(".signin img").attr("src","assets/images/GoogleIcon.png");
 	    }
 	  })
-
-
 
 });

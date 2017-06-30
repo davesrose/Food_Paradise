@@ -17,7 +17,6 @@
   const txtPassword = document.getElementById("txtPassword");
   const btnLogin = document.getElementById("btnLogin");
   const btnSignUp = document.getElementById("btnSignUp");
-  const btnLogout = document.getElementById("btnLogout");
 
   //add login event
 
@@ -27,7 +26,7 @@
     const auth = firebase.auth();
     const promise = auth.signInWithEmailAndPassword(email, pass);
     promise.catch(e => console.log(e.message));
-
+    promise.catch(e => $(".errors").html(e.message));
   })
 
   //add signup event
@@ -38,20 +37,18 @@
     const auth = firebase.auth();
     const promise = auth.createUserWithEmailAndPassword(email, pass);
     promise.catch(e => console.log(e.message));
-  });
-
-  btnLogout.addEventListener("click", e => {
-    firebase.auth().signOut();
+    promise.catch(e => $(".errors").html(e.message));
   });
 
   //add a realtime listener
   firebase.auth().onAuthStateChanged(firebaseUser => {
     if(firebaseUser) {
       console.log(firebaseUser);
-      console.log(firebaseUser.uid)
-      btnLogout.classList.remove("hide");
+      console.log(firebaseUser.uid);
+      $(".errors").html("You've successfully logged in");
     } else {
       console.log("not logged in")
-      btnLogout.classList.add("hide");
+      $(".errors").html("Log in or sign up");
     }
   })
+

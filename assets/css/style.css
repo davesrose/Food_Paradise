@@ -2,6 +2,10 @@
 .barcodeScanner .button {
 	font-size: 120%;
 	font-family: 'Overpass', sans-serif;
+	width: 100%;
+}
+.barcodeScanner {
+	width: 90%;
 }
 .wrapper {
 	max-width: 900px;
@@ -46,10 +50,19 @@ position: relative;
 	border-top-right-radius: 50%;
 	border: solid 2px #CCC;
 }
+.nameMain {
+	text-align: center;
+	max-width: 80%;
+	margin: 0 auto;
+	margin-bottom: 2%;
+	padding-left: 18%;
+}
 .name {
 	text-align: center;
 	max-width: 70%;
 	margin: 0 auto;
+	font-size: 230%;
+	padding-top: 3%;
 }
 .title {
 	margin-top: 28px;
@@ -134,7 +147,7 @@ position: relative;
 	top:0px;
 	left: 0px;
 	z-index: 10;
-	width: 25%;
+	width: 30%;
 }
 .foodInput {
 	background-color: rgba(232, 169, 101,0.9);
@@ -264,8 +277,8 @@ position: relative;
 	background-color: rgba(242, 118, 96,0.9);
 }
 .recipeContainer .signin {
-	width: 90%;
-	margin-left: 5%;
+	width: 70%;
+	margin-left: 15%;
 }
 .signin img {
 	width: 100%;
@@ -362,4 +375,25 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', end
 	font-size: 80%;
 	letter-spacing: 1px;
 	font-stretch: ultra-condensed;
+}
+html, body {
+	height: 100%;
+}
+.savedDialogue {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(000,000,000,.4);
+	position: fixed;
+}
+.savedDialogue div {
+/*	position: absolute;*/
+	background-color: #e8a965;
+	margin: 50% auto;
+	width: 68%;
+	height: 15%;
+	padding: 5%;
+	border-radius: 12px;
+	font-family: 'Oswald', sans-serif;
+	color: #fff;
+	font-size: 140%;
 }
