@@ -182,9 +182,11 @@ $(document).ready(function(){
 	      localStorage.setItem("foodName",foodName);
 	      yummlyResponse(foodName);
 	    }).fail(function (jqXHR, textStatus, errorThrown) {
+	    	$(".nutritionix").show();
 	    	$(".foodID").html("Food not found. Try typing in or scanning another.");
 	    	var foodName = "";
 	    	localStorage.setItem("foodName",foodName);
+
 	    	$(".yummlyRecipes").empty();
 			$(".foodInput").animate({
 				"height": "0px"
@@ -251,9 +253,16 @@ $(document).ready(function(){
 	          var key = childSnapshot.val();
 	          var snap = childSnapshot.key;
 	          // console.log(key);
-	          var recipeLine = '<div class="recipe" id="'+key.recipeId+'" data-recipekey="'+snap+'">'+key.recipeName+'<button type="submit" class="btn btn-default remove" data-recipekey="'+snap+'">-</button></div><div class="line"></div>';
+	          var recipeLine = '<div class="recipe" id="'+key.recipeId+'" data-recipekey="'+snap+'"><span>'+key.recipeName+'</span><button type="submit" class="btn btn-default remove" data-recipekey="'+snap+'">-</button></div><div class="line"></div>';
 	          // console.log(recipeLine);
 	          $(".recipeContainer").append(recipeLine);
+
+			  $(".recipe span").on("click", function() {
+			  	var recipeID = $(this).parent().attr("id");
+				localStorage.setItem("recipeID", recipeID);
+				console.log(localStorage.getItem("recipeID"));
+				window.location.href = "recipe.html";
+			  });
 
 
 	          $(".remove").on("click", function(childSnapshot) {
@@ -275,19 +284,6 @@ $(document).ready(function(){
 	    }
 	  })
 
-// function updateDelete(){
-//           var key = this.getAttribute("data-recipekey");
-//            console.log(key);
-//            console.log('user/'+ firebaseUser.uid +'/' + key);
-//         if (confirm("Do you want to delete this row?") == true) {
-//             console.log("You pressed OK!");
-//             database.ref('user/'+ firebaseUser.uid +'/' + key).remove();
-//           } else {
-//             alert("You pressed Cancel!");
-//                return;
-//           }
-//     };
 
-//     $(document).on("click", ".removeRecipe", updateDelete);
 
 });
