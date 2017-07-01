@@ -11,6 +11,7 @@
   };
   firebase.initializeApp(config);
   var database = firebase.database();
+  
   //Get elements
 
   const txtEmail = document.getElementById("txtEmail");
@@ -43,8 +44,8 @@
   //add a realtime listener
   firebase.auth().onAuthStateChanged(firebaseUser => {
     if(firebaseUser) {
-      console.log(firebaseUser);
-      console.log(firebaseUser.uid);
+      // console.log(firebaseUser);
+      // console.log(firebaseUser.uid);
       $(".errors").html("You've successfully logged in");
     } else {
       console.log("not logged in")

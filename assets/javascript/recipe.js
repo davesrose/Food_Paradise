@@ -39,8 +39,8 @@ $(document).ready(function(){
       url: queryURL,
       method: "GET"
     }).done(function(response) {
-      console.log(queryURL);
-      console.log(response);
+      // console.log(queryURL);
+      // console.log(response);
       var recipeName = response.name;
       var servingNum = response.numberOfServings; //variable for number of servings
       var totalTime = response.totalTime;  //variable for total cooking time
@@ -66,23 +66,22 @@ $(document).ready(function(){
       		var fiber = Math.round(response.nutritionEstimates[j].value);
       	}
       }
-      var cals = Math.round(9*fat+4*carbs+4*protein);
-      var recipeSource = response.source.sourceRecipeUrl;
-	  for (var i = 0; i < response.ingredientLines.length; i++) {
+      var cals = Math.round(9*fat+4*carbs+4*protein);  //multiplying cals per gram and adding to get total calories
+      var recipeSource = response.source.sourceRecipeUrl;  //getting recipe source url for getting recipe directions
+	  for (var i = 0; i < response.ingredientLines.length; i++) {  //creating loop for listing recipe's ingredients
       	var ingredients = response.ingredientLines[i]
-      	console.log(ingredients);
       	$(".recipeList > ul").append("<li>"+ingredients+"</li>")
       }
-      $(".name").html(recipeName);
-      $(".img").attr("src",img);
-      $(".info").html("<div class='rate'><img src='assets/images/"+rating+"stars.png'></div><div class='time'>"+totalTime+"</div><div class='servings'>Serves: "+servingNum+"</div><div class'clear'></div>");
-      $(".nutrition").html("<div class='nut' style='margin-right:3%; float: left;'>Calories:"+cals+"</div><div class'nut' style='margin-right:3%; float: left;'>Sodium:"+sodium+"mg</div><div class'nut' style='margin-right:3%; float: left;'>Carbs:"+carbs+"g</div><div class'nut' style='margin-right:3%; float: left;'>Fat:"+fat+"g</div><div class'nut' style='margin-right:3%; float: left;'>Protein:"+protein+"g</div><div class'nut' style='margin-right:3%; float: left;'>Fiber:"+fiber+"g</div><div class'nut' style='margin-right:3%; float: left;'>Potassium:"+potassium+"mg</div><div class='clear'></div>");
-      $("#recipeModal").on("click", function() {
+      $(".name").html(recipeName); //title recipe page with recipe name
+      $(".img").attr("src",img); //render a recipe image
+      $(".info").html("<div class='rate'><img src='assets/images/"+rating+"stars.png'></div><div class='time'>"+totalTime+"</div><div class='servings'>Serves: "+servingNum+"</div><div class'clear'></div>");  //create a line with proper rating graphic, cook time, and serving number
+      $(".nutrition").html("<div class='nut' style='margin-right:3%; float: left;'>Calories:"+cals+"</div><div class'nut' style='margin-right:3%; float: left;'>Sodium:"+sodium+"mg</div><div class'nut' style='margin-right:3%; float: left;'>Carbs:"+carbs+"g</div><div class'nut' style='margin-right:3%; float: left;'>Fat:"+fat+"g</div><div class'nut' style='margin-right:3%; float: left;'>Protein:"+protein+"g</div><div class'nut' style='margin-right:3%; float: left;'>Fiber:"+fiber+"g</div><div class'nut' style='margin-right:3%; float: left;'>Potassium:"+potassium+"mg</div><div class='clear'></div>");  //make line with nutrition info
+      $("#recipeModal").on("click", function() {  //when directions button is pressed, recipe modal shows and iframe of recipe source then loads
       		$(".directionsHTML").html("<iframe src='"+recipeSource+"'></iframe>");
   		});
 
       //view and generate recipe list
-	   const config = {
+	   const config = {  //initialize firebase database
 	    apiKey: "AIzaSyDi2g588bcWLXFwdCjviNcxOLMGQapxjbU",
 	    authDomain: "food-paradise-8ef13.firebaseapp.com",
 	    databaseURL: "https://food-paradise-8ef13.firebaseio.com",
@@ -93,53 +92,52 @@ $(document).ready(function(){
 	  firebase.initializeApp(config);
 	  var database = firebase.database();
 	  //add a realtime listener
-	  firebase.auth().onAuthStateChanged(firebaseUser => {
-	    if(firebaseUser) {
-	      console.log(firebaseUser);
-	      console.log(firebaseUser.uid)
-	      $(".signin img").attr("src","assets/images/GoogleIconOut.png");
-	        database.ref("/user/" + firebaseUser.uid).on("child_added", function(childSnapshot, prevChildKey) {
-	          var key = childSnapshot.val();
-	          var snap = childSnapshot.key;
+	  firebase.auth().onAuthStateChanged(firebaseUser => {  //on user change state
+	    if(firebaseUser) {  //if user signed in
+	      // console.log(firebaseUser);
+	      // console.log(firebaseUser.uid)
+	      $(".signin img").attr("src","assets/images/GoogleIconOut.png"); //switch sign in image with sign out image
+	        database.ref("/user/" + firebaseUser.uid).on("child_added", function(childSnapshot, prevChildKey) {  //check user's database
+	          var key = childSnapshot.val();  //variable for recipe object
+	          var snap = childSnapshot.key;  //variable for recipe string value
 	          // console.log(key);
-	          var recipeLine = '<div class="recipe" id="'+key.recipeId+'" data-recipekey="'+snap+'"><span>'+key.recipeName+'</span><button type="submit" class="btn btn-default remove" data-recipekey="'+snap+'">-</button></div><div class="line"></div>';
+	          var recipeLine = '<div class="recipe" id="'+key.recipeId+'"><span>'+key.recipeName+'</span><button type="submit" class="btn btn-default remove">-</button></div><div class="line"></div>';  //create recipe line with each recipe name and ID
 	          // console.log(recipeLine);
-	          $(".recipeContainer").append(recipeLine);
+	          $(".recipeContainer").append(recipeLine); //append recipe lines
 
-	  		$(".recipe span").on("click", function() {
-			  	var recipeID = $(this).parent().attr("id");
-				localStorage.setItem("recipeID", recipeID);
-				console.log(localStorage.getItem("recipeID"));
-				window.location.href = "recipe.html";
-			  });
+	  		$(".recipe span").on("click", function() { //when user clicks on recipe, store recipe ID and refresh recipe page
+			  	var recipeID = $(this).parent().attr("id"); //get parent div's id value (the recipe ID)
+				localStorage.setItem("recipeID", recipeID); //set local recipe ID to current recipe ID
+				window.location.href = "recipe.html";  //refresh recipe.html
+			  }); //end on click
 
 
-	          $(".remove").on("click", function(childSnapshot) {
-	          	var recipeRemove = $(this).parent().attr("id");
-	          	if (recipeRemove === key.recipeId) {
-	          		database.ref("/user/" + firebaseUser.uid+"/"+snap).remove();
-	          		$(this).parent().next(".line").remove();
-	          		$(this).parent().remove();
-	          	};
-	          });
+	          $(".remove").on("click", function(childSnapshot) {  //on click of remove button
+	          	var recipeRemove = $(this).parent().attr("id");  //create variable of recipe ID
+	          	if (recipeRemove === key.recipeId) {  //targeting key that has recipe ID
+	          		database.ref("/user/" + firebaseUser.uid+"/"+snap).remove();  //remove firebase key (by declaring its string value)
+	          		$(this).parent().next(".line").remove();  //remove local page's line div
+	          		$(this).parent().remove(); //remove local page's recipe line
+	          	}; //end if
+	          }); //end on click
 
-	        });
-	        if (firebaseUser !== null) {
-				$(".signin").on("click", function() {
-					firebase.auth().signOut();
-				});
-				$("#signIn_box").modal("hide");
-			}
-	    } else {
-		    if (firebaseUser === null) {
-				$(".signin").on("click", function() {
-					$("#signIn_box").modal("show");
-				});
-				$("#signIn_box").modal("hide");
-			};
-	    	$(".signin img").attr("src","assets/images/GoogleIcon.png");
-	    	$(".line").remove();
-	    	$(".recipeContainer .recipe").remove();
+	        }); //end firebase database listener
+	        if (firebaseUser !== null) { //if firebase user is signed in
+				$(".signin").on("click", function() {  //on sign in click (which has sign out image)
+					firebase.auth().signOut(); //sign out user
+				}); //end on click
+				$("#signIn_box").modal("hide");  //prevent sign in modal from showing
+			} //end if user is signed in
+	    } else {  //else firebase user isn't signed in
+		    if (firebaseUser === null) { //if firebase user isn't signed in
+				$(".signin").on("click", function() { //on sign in click
+					$("#signIn_box").modal("show"); //show sign in modal
+				}); //end if
+				$("#signIn_box").modal("hide");  //else don't show modal on other events
+			}; //end if
+	    	$(".signin img").attr("src","assets/images/GoogleIcon.png"); //make sign in graphic say sign in
+	    	$(".line").remove(); //remove rendered display of lines when signed out
+	    	$(".recipeContainer .recipe").remove();  //remove rendered display of recipes when signed out
 	    }
 	  })
 

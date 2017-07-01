@@ -1,15 +1,14 @@
 $(document).ready(function(){
-	// $(".yummlyRecipes .recipeOption").hide();
-	$(".nutritionix").hide();
-	$(".foodInput").css({
+	$(".nutritionix").hide();  //nutrionix line displays food item name, and is initially hidden
+	$(".foodInput").css({  //collapse the food item input container
 		"overflow" : "hidden",
 		height : 0
 	});
-	$(".recipeContainer").css({
+	$(".recipeContainer").css({  //collapse the recipe container div
 		"overflow" : "hidden",
 		height : 0
 	});
-	(function($) {
+	(function($) {  //create a toggle click function
 	    $.fn.clickToggle = function(func1, func2) {
 	        var funcs = [func1, func2];
 	        this.data('toggleclicked', 0);
@@ -23,7 +22,7 @@ $(document).ready(function(){
 	    };
 	}(jQuery));
 
-	$('.foodInputCon h2,.foodInputCon .bottom,.foodInputCon .tab').clickToggle(function() {   
+	$('.foodInputCon h2,.foodInputCon .bottom,.foodInputCon .tab').clickToggle(function() { //toggle click display food input container
 	    $('.foodInput').animate({
     		height: $('.foodInput').get(0).scrollHeight
 		}, 1000, function(){
@@ -35,7 +34,7 @@ $(document).ready(function(){
 	        "height": "0px"
 	    }, 1000);
 	});
-	$('.accountRecipe h2,.accountRecipe .bottom,.accountRecipe .tab').clickToggle(function() {   
+	$('.accountRecipe h2,.accountRecipe .bottom,.accountRecipe .tab').clickToggle(function() { //toggle click display recipe container 
 	    $('.recipeContainer').animate({
     		height: $('.recipeContainer').get(0).scrollHeight
 		}, 1000, function(){
@@ -47,12 +46,12 @@ $(document).ready(function(){
 	        height: 0
 	    }, 1000);
 	});
-	if (localStorage.getItem("foodName") !== null) {
+	if (localStorage.getItem("foodName") !== null) { //if coming back from another page, keep food name and run yummly query
 		var foodName = localStorage.getItem("foodName");
 		yummlyResponse(foodName);
 	}
-	$(function() {
-		// Create the QuaggaJS config object for the live stream
+	$(function() { //script for the QuaggaJS barcode scanning software
+		// Create the QuaggaJS config object for the live stream, interactive scanner
 		var liveStreamConfig = {
 				inputStream: {
 					type : "LiveStream",
@@ -164,8 +163,8 @@ $(document).ready(function(){
 			}
 		});
 	});	
-	function getIDs(UPC) {
-		$(".barcodeNum").html("UPC: " + UPC);
+	function getIDs(UPC) {  //function for looking up UPC code with nutritionix
+		// make query with UPC code in nutritionix
 		var queryURL = "https://api.nutritionix.com/v1_1/item?upc="+UPC+"&appId=af71ef2f&appKey=64be45970143817635f29340426218f7";
 	    $.ajax({
 	      url: queryURL,
@@ -173,65 +172,66 @@ $(document).ready(function(){
 	    }).done(function(response) {
 	      console.log(queryURL);
 	      console.log(response);
-			$(".foodInput").animate({
+			$(".foodInput").animate({ //after inputting food, animate tab to collapse
 				"height": "0px"
 			}, 1400);
-	      var foodName = response.item_name.replace(/,/g , '');;
-		$(".nutritionix").show();
-	      $(".foodID").html("Food Name: " + foodName);
-	      localStorage.setItem("foodName",foodName);
-	      yummlyResponse(foodName);
-	    }).fail(function (jqXHR, textStatus, errorThrown) {
+	      var foodName = response.item_name.replace(/,/g , '');  //get food name item from item_name response
+		$(".nutritionix").show(); //show line for user to see the food item found
+	      $(".foodID").html("Food Name: " + foodName); //show food item
+	      localStorage.setItem("foodName",foodName); // set food item in local storage
+	      yummlyResponse(foodName); //run yummly query function with food name
+	    }).fail(function (jqXHR, textStatus, errorThrown) { //if nutritionix response doesn't return value
 	    	$(".nutritionix").show();
-	    	$(".foodID").html("Food not found. Try typing in or scanning another.");
+	    	$(".foodID").html("Food not found. Try typing in or scanning another."); //show food item line with food not found
 	    	var foodName = "";
-	    	localStorage.setItem("foodName",foodName);
+	    	localStorage.setItem("foodName",foodName); //set food name as empty
 
-	    	$(".yummlyRecipes").empty();
-			$(".foodInput").animate({
+	    	$(".yummlyRecipes").empty();  //clear any previous yummply returns
+			$(".foodInput").animate({  //collapse food input tab
 				"height": "0px"
 			}, 1400);
 	    });
 	}
-	function yummlyResponse(foodName) {
-		$(".yummlyRecipes").empty();
+	function yummlyResponse(foodName) { //function for querying yummly recipes
+		$(".yummlyRecipes").empty(); //clear previous yummly returns
+		//query yummly api for recipes
 		var queryURL2 = "https://api.yummly.com/v1/api/recipes?_app_id=069691a5&_app_key=3944fb993fe2cb009e5e6a5fd1e4facb&q="+foodName+"&requirePictures=true&maxResult=10&start=10"
 	    $.ajax({
 	      url: queryURL2,
 	      method: "GET"
 	    }).done(function(response) {
-	      console.log(queryURL2);
-	      console.log(response);
-	      if (response.matches.length === 0) {
+	      // console.log(queryURL2);
+	      // console.log(response);
+	      if (response.matches.length === 0) { //this is rare, but if no response, return no recipes found
 	      	$(".yummlyRecipes").html("<div class='noRecipes'>No Recipes Found</div>")
 	      }
-	      for (var i = 0; i < response.matches.length; i++) {
-	      	var foodItems = response.matches[i].id;
-	      	var recipeName = response.matches[i].recipeName;
-	      	var thumbnail = response.matches[i].smallImageUrls[0];
-	      	var rating = response.matches[i].rating;
-	      	var source = response.matches[i].sourceDisplayName;
-	      	var foodListings = ("<div data-id='"+foodItems+"' class='recipeOption'><div class='recipeThumb'><img src='"+thumbnail+"'><div class'recipeInfo'><div class='top'>" + recipeName + "</div><div class='recipeBottom'>"+rating+"/5<span class='source'>&emsp;Source: "+source+"</span></div></div><div style='clear: left;'></div></div></div>");
-	      	$(".yummlyRecipes").append(foodListings);
+	      for (var i = 0; i < response.matches.length; i++) {  //response returns array, and we set variables for each item
+	      	var foodItems = response.matches[i].id;  //recipe ID item
+	      	var recipeName = response.matches[i].recipeName;  //recipe name item
+	      	var thumbnail = response.matches[i].smallImageUrls[0]; //thumbnail image
+	      	var rating = response.matches[i].rating;  //recipe rating
+	      	var source = response.matches[i].sourceDisplayName;  //the source website name
+	      	var foodListings = ("<div data-id='"+foodItems+"' class='recipeOption'><div class='recipeThumb'><img src='"+thumbnail+"'><div class'recipeInfo'><div class='top'>" + recipeName + "</div><div class='recipeBottom'>"+rating+"/5<span class='source'>&emsp;Source: "+source+"</span></div></div><div style='clear: left;'></div></div></div>"); //create recipe line with thumbnail image, recipe name, rating, and source
+	      	$(".yummlyRecipes").append(foodListings); //append recipe links with yummly element
 	      }
 	    });
 	}
-	$(document).on("click", "div.recipeOption" , function() {
-		var recipeID = $(this).data("id");
-		console.log(recipeID);
-		localStorage.setItem("recipeID", recipeID);
-		console.log(localStorage.getItem("recipeID"));
-		window.location.href = "recipe.html";
+	$(document).on("click", "div.recipeOption" , function() { //on click of recipe line
+		var recipeID = $(this).data("id"); //recipe ID is id of recipe line div
+		// console.log(recipeID);
+		localStorage.setItem("recipeID", recipeID); //local storage of recipe ID
+		// console.log(localStorage.getItem("recipeID"));
+		window.location.href = "recipe.html"; //open recipe.html, now that recipe ID is stored
 	});
-	$("#foodSubmit").on("click", function() {
-		$(".nutritionix").show();
-		var foodName = $("#food-input").val().replace(/,/g , '');
-	    $(".foodID").html("Food Name: " + foodName);
-	    localStorage.setItem("foodName",foodName);
-	    yummlyResponse(foodName);
+	$("#foodSubmit").on("click", function() {  //food item input for input text instead of barcode
+		$(".nutritionix").show(); //show food item line
+		var foodName = $("#food-input").val().replace(/,/g , ''); //show food name value, take out any commas
+	    $(".foodID").html("Food Name: " + foodName); //list food name entered
+	    localStorage.setItem("foodName",foodName); //local storage of food name
+	    yummlyResponse(foodName); //run yummly response of food item input
 	});
 
-	   const config = {
+	   const config = {  //initialize firebase API for recipe sign in
 	    apiKey: "AIzaSyDi2g588bcWLXFwdCjviNcxOLMGQapxjbU",
 	    authDomain: "food-paradise-8ef13.firebaseapp.com",
 	    databaseURL: "https://food-paradise-8ef13.firebaseio.com",
@@ -242,53 +242,53 @@ $(document).ready(function(){
 	  firebase.initializeApp(config);
 	  var database = firebase.database();
 	  //add a realtime listener
-	  firebase.auth().onAuthStateChanged(firebaseUser => {
-	    if(firebaseUser) {
-	      console.log(firebaseUser);
-	      console.log(firebaseUser.uid)
+	  firebase.auth().onAuthStateChanged(firebaseUser => { //user sign in state
+	    if(firebaseUser) { //if user is signed in
+	      // console.log(firebaseUser);
+	      // console.log(firebaseUser.uid)
 	      
-	        database.ref("/user/" + firebaseUser.uid).on("child_added", function(childSnapshot, prevChildKey) {
-	          var key = childSnapshot.val();
-	          var snap = childSnapshot.key;
-	          var recipeLine = '<div class="recipe" id="'+key.recipeId+'" data-recipekey="'+snap+'"><span>'+key.recipeName+'</span><button type="submit" class="btn btn-default remove" data-recipekey="'+snap+'">-</button></div><div class="line"></div>';
-	          $(".recipeContainer").append(recipeLine);
+	        database.ref("/user/" + firebaseUser.uid).on("child_added", function(childSnapshot, prevChildKey) { //user database listener
+	          var key = childSnapshot.val(); //key variable for recipe object
+	          var snap = childSnapshot.key; //variable for storing recipe ID
+	          var recipeLine = '<div class="recipe" id="'+key.recipeId+'"><span>'+key.recipeName+'</span><button type="submit" class="btn btn-default remove">-</button></div><div class="line"></div>'; //generate recipe line
+	          $(".recipeContainer").append(recipeLine); //append recipe lines to container
 
-			  $(".recipe span").on("click", function() {
+			  $(".recipe span").on("click", function() { //on click, store recipe ID and go to recipe.html
 			  	var recipeID = $(this).parent().attr("id");
 				localStorage.setItem("recipeID", recipeID);
-				console.log(localStorage.getItem("recipeID"));
+				// console.log(localStorage.getItem("recipeID"));
 				window.location.href = "recipe.html";
 			  });
 
 
-	          $(".remove").on("click", function(childSnapshot) {
-	          	var recipeRemove = $(this).parent().attr("id");
-	          	if (recipeRemove === key.recipeId) {
-	          		database.ref("/user/" + firebaseUser.uid+"/"+snap).remove();
-	          		$(this).parent().next(".line").remove();
-	          		$(this).parent().remove();
-	          	};
-	          });
+	          $(".remove").on("click", function(childSnapshot) { //on click, remove this recipe line from page and firebase
+	          	var recipeRemove = $(this).parent().attr("id"); //get recipe variable from recipe id attribute
+	          	if (recipeRemove === key.recipeId) { //if local recipe Id is equal to a firebase recipe key id
+	          		database.ref("/user/" + firebaseUser.uid+"/"+snap).remove(); //remove recipe value from firebase
+	          		$(this).parent().next(".line").remove(); //remove recipe line div
+	          		$(this).parent().remove(); //remove recipe line
+	          	}; //end if
+	          }); //end on click
 
-	        });
-	        $(".signin img").attr("src","assets/images/GoogleIconOut.png");
-	        if (firebaseUser !== null) {
-				$(".signin").on("click", function() {
-					firebase.auth().signOut();
-				});
-				$("#signIn_box").modal("hide");
+	        }); //end user database listener
+	        $(".signin img").attr("src","assets/images/GoogleIconOut.png");  //when user signed in, make sign in graphic show sign out
+	        if (firebaseUser !== null) {  //if user is signed in
+				$(".signin").on("click", function() { //on sign in click
+					firebase.auth().signOut(); //sign user out
+				}); //end if
+				$("#signIn_box").modal("hide"); //make sure sign in modal doesn't open for other events
 			}
-	    } else {
-		    if (firebaseUser === null) {
-				$(".signin").on("click", function() {
-					$("#signIn_box").modal("show");
+	    } else { //else user isn't signed in
+		    if (firebaseUser === null) { //if user isn't signed in
+				$(".signin").on("click", function() { //on click sign in
+					$("#signIn_box").modal("show"); //show sign in modal
 				});
-				$("#signIn_box").modal("hide");
-			};
-	    	$(".line").remove();
-	    	$(".recipeContainer .recipe").remove();
-	    	$(".signin img").attr("src","assets/images/GoogleIcon.png");
-	    }
-	  })
+				$("#signIn_box").modal("hide"); //for other events, don't show sign in modal
+			}; //end if
+	    	$(".line").remove(); //when signed out, remove lines under recipes
+	    	$(".recipeContainer .recipe").remove(); //when signed out, remove recipe entries
+	    	$(".signin img").attr("src","assets/images/GoogleIcon.png"); //change sign in graphic to sign in
+	    } //end else
+	  }) //end firebase authentication
 
-});
+}); //end document load
