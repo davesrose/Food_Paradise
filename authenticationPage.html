@@ -15,17 +15,17 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     
 
   </head>
-  <body>
+  <body style="background-color: #fff;">
   <div class="container">
-    <input id="txtEmail" type="email" placeholder="Email">
+    <input id="txtEmail" type="email" placeholder="Email" class="signTxt">
 
-    <input id="txtPassword" type="password" placeholder="Password"><br>
-    <button id="btnLogin" class="btn btn-action">Log In</button>
-    <button id="btnSignUp" class="btn btn-secondary">Sign Up</button><br>
+    <input id="txtPassword" type="password" placeholder="Password" class="signTxt"><br>
+    <button id="btnLogin" class="btn btn-action btnSignin">Log In</button>
+    <button id="btnSignUp" class="btn btn-secondary btnSignin">Sign Up</button><br>
     <div class="errors">Log in or sign up</div>
   </div>
   <script type="text/javascript" src="assets/javascript/uaDBstore.js"></script>

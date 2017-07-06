@@ -52,4 +52,3 @@
       $(".errors").html("Log in or sign up");
     }
   })
-

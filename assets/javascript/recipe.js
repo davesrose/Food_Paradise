@@ -173,21 +173,6 @@ $(document).ready(function(){
 	  	});
 	});
 
-	if (screen.width > 720) {
-		$(".barcodeScanner button").html("Barcode Scanner");
-		$(".signin img").css({
-			width : "80%",
-			"margin-left" : "10%",
-			"margin-top" : "5%"
-		});
-	} else {
-		$(".barcodeScanner button").html("Scan");
-		$(".signin img").css({
-			width : "100%",
-			"margin-left" : "0px",
-			"margin-top" : "0px"
-		});
-	}
 
     });
 });
