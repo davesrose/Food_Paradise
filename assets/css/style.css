@@ -447,6 +447,9 @@ html, body {
 		color: #fff;
 		font-size: 140%;
 	}
+.recipeList ul li {
+	margin-left: -4%;
+}
 }
 @media screen and (min-width : 900px) {
 	.foodInputCon {
