@@ -108,7 +108,7 @@ $(document).ready(function(){
 	  		$(".recipe span").on("click", function() { //when user clicks on recipe, store recipe ID and refresh recipe page
 			  	var recipeID = $(this).parent().attr("id"); //get parent div's id value (the recipe ID)
 				localStorage.setItem("recipeID", recipeID); //set local recipe ID to current recipe ID
-				window.location.href = "recipe.html";  //refresh recipe.html
+				window.location.href = "http://food-paradise.herokuapp.com/recipe.html";  //refresh recipe.html
 			  }); //end on click
 
 

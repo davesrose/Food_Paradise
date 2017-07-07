@@ -221,7 +221,7 @@ $(document).ready(function(){
 		// console.log(recipeID);
 		localStorage.setItem("recipeID", recipeID); //local storage of recipe ID
 		// console.log(localStorage.getItem("recipeID"));
-		window.location.href = "recipe.html"; //open recipe.html, now that recipe ID is stored
+		window.location.href = "http://food-paradise.herokuapp.com/recipe.html"; //open recipe.html, now that recipe ID is stored
 	});
 	$("#foodSubmit").on("click", function() {  //food item input for input text instead of barcode
 		$(".nutritionix").show(); //show food item line
@@ -257,7 +257,7 @@ $(document).ready(function(){
 			  	var recipeID = $(this).parent().attr("id");
 				localStorage.setItem("recipeID", recipeID);
 				// console.log(localStorage.getItem("recipeID"));
-				window.location.href = "recipe.html";
+				window.location.href = "http://food-paradise.herokuapp.com/recipe.html";
 			  });
 
 
